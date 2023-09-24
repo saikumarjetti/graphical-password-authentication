@@ -10,6 +10,7 @@ function Login(props: LoginProps) {
   const [password, setPassword] = useState("");
   const handleLogin = () => {
     // You can add validation logic here before calling onLogin
+
     props.onLogin(username, password);
   };
 
@@ -28,6 +29,7 @@ function Login(props: LoginProps) {
               margin="normal"
               variant="outlined"
               value={username}
+              required={true}
               onChange={(e) => setUsername(e.target.value)}
             />
             <TextField
@@ -36,10 +38,12 @@ function Login(props: LoginProps) {
               margin="normal"
               variant="outlined"
               type="password"
+              required={true}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button
+              type="submit"
               variant="contained"
               color="primary"
               fullWidth
