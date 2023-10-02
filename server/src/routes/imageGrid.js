@@ -210,6 +210,99 @@ const DATA = {
   ],
 };
 
+// app.get("/img", async (req, res) => {
+//   var aaa = [];
+//   var bb = [];
+//   var p = "./public/inf/";
+//   fs.readdir(p, function (err, files) {
+//     var result = { data: "dwqdwd" };
+//     if (err) {
+//       console.error(err);
+//     }
+//     // res.setHeader("Content-Type", "text/html");
+
+//     for (var i = 0; i < 3; i++) {
+//       var pp = p + files[i];
+//       console.log(pp);
+//       console.log(files[i]);
+//       bb.push(files[i]);
+//       //   aaa.push(files[i]);
+//       fs.readFile(pp, function (err, data) {
+//         if (err) {
+//           console.error(err);
+//         }
+//         bb.push(data);
+//         var base64 = Buffer.from(data).toString("base64");
+//         base64 = String(`data:image/png;base64,${base64}`);
+//         // console.log(base64);
+//         console.log(base64.length);
+//         aaa.push(String(base64));
+//         // console.log(result);
+//         // res.send(base64);
+//         console.log("in loppp");
+//         res.write(JSON.stringify(base64));
+//         res.write(`${i}`);
+//         result["123"] = "sfasfasfaff";
+//       });
+//     }
+//     console.log(aaa);
+//     console.log(bb);
+//     console.log(result);
+//     res.json(aaa);
+//   });
+// });
+// let lll = [];
+// const imgData = {};
+
+// async function myF() {
+//   let names;
+//   try {
+//     names = await readdir(`./public/${imgList[0]}/`);
+//   } catch (err) {
+//     console.log(err);
+//   }
+//   if (names === undefined) {
+//     console.log("undefined");
+//   } else {
+//     console.log("First Name", names[0]);
+//     return names;
+//   }
+// }
+
+// myF().then((val) => {
+//   console.log(val);
+// });
+// async function getRandImg(lnt = 9) {
+//   let result = [];
+//   while (lnt > 1) {
+//     k = imgList.length - 0.5;
+//     ranFolder = Math.round(Math.random() * k);
+//     // console.log(`ranFolder = ${ranFolder}`);
+
+//     let files = await readdir(`./public/${imgList[ranFolder]}/`);
+//     // console.log(`imgfolder = ${imgList[ranFolder]}`);
+//     // console.log(`imgfolder legth = ${files.length}`);
+//     ranfile = Math.round(Math.random() * lnt);
+//     // console.log(`ranfile = ${ranfile}`);
+//     for (let i = 0; i < ranfile; i++) {
+//       ranNum = Math.round(Math.random() * files.length);
+//       let p = `./public/${ranFolder}/${files[ranNum]}`;
+//       result.push(p);
+//       // console.log(`rannum = ${ranNum} p = ${files[ranNum]}`);
+//       lnt--;
+//     }
+//   }
+//   console.log(`lnt = ${lnt}`);
+//   console.log("end");
+//   // console.log(result);
+//   return result;
+// }
+
+// getRandImg().then((val) => {
+//   console.log(val.length);
+//   console.log(val);
+// });
+
 function getImageGrid() {}
 
 module.exports = getImageGrid;
