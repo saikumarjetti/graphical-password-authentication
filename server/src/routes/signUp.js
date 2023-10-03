@@ -2,18 +2,50 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
-// Get all users
-router.get("/test", async (_req, res) => {
-  console.log("logging test");
-  try {
-    const data = await User.findOne({ username: "a" });
-    if (data) {
-      res.json({ server: "working", DB: "working" });
-    }
-  } catch {
-    res.status(401).json({ server: "working", DB: "not working" });
-  }
-});
+const fs = require("fs").promises;
+
+let AllSimilarImagesJson = {};
+let imgsList = {};
+// async function getAllSimilarListJson() {
+//   const allJsonData = {};
+//   const similarImageJsonList = await fs.readdir(
+//     `${process.cwd()}/Python-SimilarImages/result`
+//   );
+//   for (const file of similarImageJsonList) {
+//     console.log(file);
+//     try {
+//       const data = await fs.readFile(
+//         `${process.cwd()}/Python-SimilarImages/result/${file}`,
+//         "utf8"
+//       );
+//       const jsonObject = JSON.parse(data);
+//       allJsonData[`${file.split(".")[0]}`] = jsonObject;
+//     } catch (error) {
+//       console.error("Error:", error);
+//     }
+//   }
+//   return allJsonData;
+// }
+// getAllSimilarListJson().then((data) => {
+//   AllSimilarImagesJson = data;
+// });
+
+// async function getSimilarImages(imgList) {}
+// getSimilarImages({
+//   0: "infWCDmbiJPPa.png",
+//   1: "zrcAIFKKxdqzw.png",
+//   2: "uxqumK2CUbNa5.png",
+//   3: "zrc7K5sYzwuz1.png",
+//   4: "uxqBkCpiDeYEM.png",
+// })
+//   .then((folderList) => {
+//     // imgsList = { ...folderList["imgsList"] };
+//     // imgFoldersList = [...Object.keys(folderList)];
+//   })
+//   .catch((err) => {
+//     console.error("Error:", err);
+//   });
+
 router.get("/users", async (req, res) => {
   const { username } = req.query;
   console.log(username);

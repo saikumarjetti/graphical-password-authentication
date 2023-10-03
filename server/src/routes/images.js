@@ -1,6 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const fs = require("fs").promises;
+const dataLoader = require("../../dataLoader");
+
+// Call the function to get the data and handle it with .then()
+
+// Access the loaded data
+const imageList = dataLoader.getAllImagesList();
+const similarImagesJson = dataLoader.getAllSimilarListJson();
+
+// Use the loaded data as needed in your application
+// console.log("Image List:", imageList);
+// console.log("Similar Images JSON:", similarImagesJson);
 // "ido", "inf", "kwm", "pev", "uxq", "yaj", "zrc"
 const imgListToCat = {
   animals: "ido",
@@ -13,29 +23,29 @@ const imgListToCat = {
 };
 let imgFoldersList = [];
 let imgsList = {};
-async function getAllImagesList() {
-  const imgsList = {};
-  const imgFolderList = await fs.readdir(`${process.cwd()}/public`); // Use await to wait for the folder list
+// async function getAllImagesList() {
+//   const imgsList = {};
+//   const imgFolderList = await fs.readdir(`${process.cwd()}/public`); // Use await to wait for the folder list
 
-  for (const folder of imgFolderList) {
-    try {
-      const files = await fs.readdir(`${process.cwd()}/public/${folder}`);
-      imgsList[folder] = files;
-    } catch (err) {
-      console.error("Error reading folder:", err);
-    }
-  }
-  return { imgsList };
-}
+//   for (const folder of imgFolderList) {
+//     try {
+//       const files = await fs.readdir(`${process.cwd()}/public/${folder}`);
+//       imgsList[folder] = files;
+//     } catch (err) {
+//       console.error("Error reading folder:", err);
+//     }
+//   }
+//   return { imgsList };
+// }
 
-getAllImagesList()
-  .then((folderList) => {
-    imgsList = { ...folderList["imgsList"] };
-    imgFoldersList = [...Object.keys(folderList)];
-  })
-  .catch((err) => {
-    console.error("Error:", err);
-  });
+// getAllImagesList()
+//   .then((folderList) => {
+//     imgsList = { ...folderList["imgsList"] };
+//     imgFoldersList = [...Object.keys(folderList)];
+//   })
+//   .catch((err) => {
+//     console.error("Error:", err);
+//   });
 
 router.get("/category", async (req, res) => {
   res.json({
