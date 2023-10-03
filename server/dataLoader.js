@@ -1,11 +1,20 @@
 const fs = require("fs");
 
 // Define variables to store the data
+const imgListToCat = {
+  animals: "ido",
+  flags: "inf",
+  architecture: "kwm",
+  birds: "pev",
+  food: "uxq",
+  cars: "yaj",
+  flowers: "zrc",
+};
 let imgsList = {};
+let imgFolderList = [];
 let AllSimilarImagesJson = {};
 function readAllImagesList() {
-  const imgFolderList = fs.readdirSync(`${process.cwd()}/public`); // Use await to wait for the folder list
-
+  imgFolderList = fs.readdirSync(`${process.cwd()}/public`);
   for (const folder of imgFolderList) {
     try {
       const files = fs.readdirSync(`${process.cwd()}/public/${folder}`);
@@ -43,4 +52,6 @@ module.exports = {
   readAllSimilarListJson,
   getAllImagesList: () => imgsList,
   getAllSimilarListJson: () => AllSimilarImagesJson,
+  imgListToCat,
+  imgFolderList,
 };

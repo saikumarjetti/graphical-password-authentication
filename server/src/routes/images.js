@@ -12,15 +12,15 @@ const similarImagesJson = dataLoader.getAllSimilarListJson();
 // console.log("Image List:", imageList);
 // console.log("Similar Images JSON:", similarImagesJson);
 // "ido", "inf", "kwm", "pev", "uxq", "yaj", "zrc"
-const imgListToCat = {
-  animals: "ido",
-  flags: "inf",
-  architecture: "kwm",
-  birds: "pev",
-  food: "uxq",
-  cars: "yaj",
-  flowers: "zrc",
-};
+// const imgListToCat = {
+//   animals: "ido",
+//   flags: "inf",
+//   architecture: "kwm",
+//   birds: "pev",
+//   food: "uxq",
+//   cars: "yaj",
+//   flowers: "zrc",
+// };
 let imgFoldersList = [];
 let imgsList = {};
 // async function getAllImagesList() {
@@ -49,15 +49,15 @@ let imgsList = {};
 
 router.get("/category", async (req, res) => {
   res.json({
-    category: Object.keys(imgListToCat),
+    category: Object.keys(dataLoader.imgListToCat),
     length: imgFoldersList.length,
   });
 });
 
 // Loop through the imgListToCat object to create routes dynamically 😜
-for (const category in imgListToCat) {
-  if (imgListToCat.hasOwnProperty(category)) {
-    const key = imgListToCat[category];
+for (const category in dataLoader.imgListToCat) {
+  if (dataLoader.imgListToCat.hasOwnProperty(category)) {
+    const key = dataLoader.imgListToCat[category];
 
     router.get(`/images/${category}`, async (req, res) => {
       let data = imgsList[key];

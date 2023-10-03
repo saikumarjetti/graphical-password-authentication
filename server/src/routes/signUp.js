@@ -3,48 +3,45 @@ const router = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const fs = require("fs").promises;
+const dataLoader = require("../../dataLoader");
 
-let AllSimilarImagesJson = {};
-let imgsList = {};
-// async function getAllSimilarListJson() {
-//   const allJsonData = {};
-//   const similarImageJsonList = await fs.readdir(
-//     `${process.cwd()}/Python-SimilarImages/result`
-//   );
-//   for (const file of similarImageJsonList) {
-//     console.log(file);
-//     try {
-//       const data = await fs.readFile(
-//         `${process.cwd()}/Python-SimilarImages/result/${file}`,
-//         "utf8"
-//       );
-//       const jsonObject = JSON.parse(data);
-//       allJsonData[`${file.split(".")[0]}`] = jsonObject;
-//     } catch (error) {
-//       console.error("Error:", error);
-//     }
-//   }
-//   return allJsonData;
-// }
-// getAllSimilarListJson().then((data) => {
-//   AllSimilarImagesJson = data;
-// });
+const AllSimilarImagesJson = dataLoader.getAllSimilarListJson();
+function getSimilarImages(imgList, size = 3) {
+  const result = {};
+  for (img in imgList) {
+    let cat = imgList[img].split(".")[0].slice(0, 3);
+    let imgName = imgList[img].split(".")[0];
 
-// async function getSimilarImages(imgList) {}
-// getSimilarImages({
-//   0: "infWCDmbiJPPa.png",
-//   1: "zrcAIFKKxdqzw.png",
-//   2: "uxqumK2CUbNa5.png",
-//   3: "zrc7K5sYzwuz1.png",
-//   4: "uxqBkCpiDeYEM.png",
-// })
-//   .then((folderList) => {
-//     // imgsList = { ...folderList["imgsList"] };
-//     // imgFoldersList = [...Object.keys(folderList)];
+    result[imgName] = Object.values(AllSimilarImagesJson[cat][imgName]).slice(
+      0,
+      size
+    );
+  }
+
+  return result;
+}
+function getRandomImgNames(len) {
+  let result = [];
+  let catLen = dataLoader.imgFolderList.length;
+  for (let i = 0; i < len; i++) {
+    let cat = dataLoader.imgFolderList[Math.floor(Math.random() * catLen)];
+    let img =
+      dataLoader.getAllImagesList()[cat][
+        Math.floor(Math.random() * dataLoader.getAllImagesList()[cat].length)
+      ];
+    result.push(img);
+  }
+}
+getRandomImgNames(3);
+// console.log(
+//   getSimilarImages({
+//     0: "infWCDmbiJPPa.png",
+//     1: "zrcAIFKKxdqzw.png",
+//     2: "uxqumK2CUbNa5.png",
+//     3: "zrc7K5sYzwuz1.png",
+//     4: "uxqBkCpiDeYEM.png",
 //   })
-//   .catch((err) => {
-//     console.error("Error:", err);
-//   });
+// );
 
 router.get("/users", async (req, res) => {
   const { username } = req.query;
