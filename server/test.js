@@ -1,8 +1,9 @@
 // const bcrypt = require("bcryptjs");
-const fs = require("fs");
+// const fs = require("fs");
 const crypto = require("crypto");
 
-const hash = "d617d91c5c5b9629aa303af00118338f1bbb6f574c3f406f8d0dd363e5373ade";
+const FinalHash =
+  "d617d91c5c5b9629aa303af00118338f1bbb6f574c3f406f8d0dd363e5373ade";
 const imagesList = [
   "uxqq6k9h5ORCJ.png",
   "zrc7jwW0GI3SM.png",
@@ -91,7 +92,28 @@ let allFilesHash = {
 //   3: "uxqCsOqu78fNV.png",
 //   4: "uxqI3SVSPwIQU.png",
 // });
+function generatePermutationsWithoutRepetition(arr, n) {
+  const result = [];
 
+  // Define a helper function for recursion
+  function backtrack(currentPerm, remainingItems) {
+    if (currentPerm.length === n) {
+      result.push([...currentPerm]); // Found a valid permutation
+      return;
+    }
+
+    for (let i = 0; i < remainingItems.length; i++) {
+      currentPerm.push(remainingItems[i]); // Add an item to the current permutation
+      const nextItems = [...remainingItems];
+      nextItems.splice(i, 1); // Remove the added item from remaining items
+      backtrack(currentPerm, nextItems); // Recursively generate permutations
+      currentPerm.pop(); // Backtrack by removing the last added item
+    }
+  }
+
+  backtrack([], arr); // Start with an empty current permutation and all items
+  return result;
+}
 const hack = () => {
   const passwordLen = 5;
   let hash = {};
@@ -108,8 +130,43 @@ const hack = () => {
 
   // step 2
 
-  finalHash = crypto.createHash("sha256").update(finalHash).digest("hex");
-  return allFilesHash;
+  let permutationData = generatePermutationsWithoutRepetition(
+    Object.values(allFilesHash),
+    passwordLen
+  );
+  console.log(
+    " 🚀 ~ file: test.js:135 ~ hack ~ permutationData:",
+    permutationData.slice(0, 5)
+  );
+  console.log(
+    " 🚀 ~ file: test.js:135 ~ hack ~ permutationData:6,375,600",
+    permutationData.length
+  );
+  // get hot here 🔥 🥵
+  let totalNoOfTrys = 0;
+  let tryData = permutationData.slice(0, 5);
+  console.time("loopTime");
+  tryData.forEach((hashList) => {
+    let computHash = crypto
+      .createHash("sha256")
+      .update(hashList.join(""))
+      .digest("hex");
+    console.log(` 🚀 ~ computHash -> ${computHash} Trying -> ${totalNoOfTrys}`);
+    if (computHash === FinalHash) {
+      console.log(`You made it human : this is the sequence ${hashList}`);
+      return;
+    }
+    totalNoOfTrys += 1;
+  });
+  console.timeEnd("loopTime");
+
+  // Get memory usage
+  const memoryUsage = process.memoryUsage();
+  console.log("Memory Usage:", memoryUsage);
+  console.log(
+    `All this math is just making my brain spin 😅, but havent found the sequence`
+  );
+
   //   let finalHash = Object.values(hash).join("");
 };
 hack();
