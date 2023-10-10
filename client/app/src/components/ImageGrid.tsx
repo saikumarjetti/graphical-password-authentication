@@ -4,7 +4,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 export type ImageGridProps = {
   imageNames: string[];
   category: string;
-  selectedImages?: string[];
+  selectedImages?: object;
   setSelectedImages?: () => void;
   handleSelectedImages: (
     e: React.MouseEvent<HTMLImageElement, MouseEvent>,
@@ -13,6 +13,7 @@ export type ImageGridProps = {
 };
 
 export default function ImageGrid(props: ImageGridProps) {
+  const data = props.selectedImages ? Object.values(props.selectedImages) : [];
   return (
     props.imageNames && (
       <>
@@ -21,9 +22,7 @@ export default function ImageGrid(props: ImageGridProps) {
           {props.imageNames.map((item) => (
             <ImageListItem
               key={item}
-              sx={
-                props.selectedImages?.includes(item) ? { opacity: 0.3 } : null
-              }
+              sx={data.includes(item) ? { opacity: 0.3 } : null}
             >
               <img
                 src={`http://localhost:8000/image/${item}`}

@@ -1,5 +1,5 @@
 import NavBar from "../components/NavBar";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Container, TextField, Typography } from "@mui/material";
 
 import Box from "@mui/material/Box";
@@ -37,7 +37,7 @@ function SignUp(props: SignUpProps) {
   const [passwordLen, setPasswordLen] = useState(5);
   const [emailNotExists, setEmailNotExists] = useState(false);
   const [selectImages, setSelectImages] = useState(false);
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState({});
 
   const [onNext, setOnNext] = useState<OnNextType>({
     emailNotExists: false,
@@ -66,9 +66,25 @@ function SignUp(props: SignUpProps) {
     item: string
   ) => {
     console.log(item);
-    setSelectedImages((pre) => {
-      return [...pre, item];
-    });
+    const l = Object.values(selectedImages);
+    if (l.includes(item)) {
+      console.log(`${item} already present in list, so removing it now`);
+      setSelectImages((pre) => {
+        let keyToRemove = "0";
+        for (const i in selectedImages) {
+          if (selectedImages[i] === item) {
+            keyToRemove = i;
+          }
+        }
+        delete selectedImages[keyToRemove];
+        return selectedImages;
+      });
+    } else {
+      setSelectedImages((pre) => {
+        return { ...pre, [l.length]: item };
+      });
+    }
+    console.log(selectedImages);
   };
   const getImagesForCategorysFromServer = async () => {
     // let currentPage = 1;
@@ -255,6 +271,24 @@ function SignUp(props: SignUpProps) {
                     ></ImageGrid>
                   );
                 })}
+                {selectedImages && (
+                  <>
+                    <h1>Selected images</h1>
+                    {/* {Object.values(selectedImages).map((images)=>{
+                    return ( */}
+                    <>
+                      <ImageGrid
+                        // selectedImages={selectedImages}
+                        // setSelectedImages={setSelectImages}
+                        handleSelectedImages={handleSelectedImages}
+                        category={"selected images"}
+                        imageNames={Object.values(selectedImages)}
+                      ></ImageGrid>
+                    </>
+                    {/* ); */}
+                    {/* })} */}
+                  </>
+                )}
                 <Button
                   type="submit"
                   variant="contained"

@@ -8,6 +8,7 @@ const app = express();
 const helmet = require("helmet");
 const multer = require("multer");
 const dataLoader = require("./dataLoader");
+const aa = require("./test");
 
 // const usersRouter = require("./src/routes/users");
 const loginRouter = require("./src/routes/signUp");

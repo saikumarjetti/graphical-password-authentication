@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   locked: Boolean,
   lockExpiry: Number,
   imgList: Object,
+  imagesList: Object,
 });
 
 const User = mongoose.model("User", userSchema);
