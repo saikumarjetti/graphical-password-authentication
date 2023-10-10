@@ -13,6 +13,10 @@ const dataLoader = require("./dataLoader");
 const loginRouter = require("./src/routes/signUp");
 const signUpRouter = require("./src/routes/login");
 const imagesRouter = require("./src/routes/images");
+const corsOptions = {
+  origin: "http://localhost:5173", // Replace with the actual origin of your React app
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+};
 function LoadFileData() {
   dataLoader.readAllImagesList();
 
@@ -39,9 +43,10 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
-app.use(express.static("public"));
-app.use(helmet());
-app.use(cors());
+app.use(cors(corsOptions));
+helmet({
+  crossOriginResourcePolicy: false,
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));

@@ -7,13 +7,14 @@ const dataLoader = require("../../dataLoader");
 // Access the loaded data
 const imageList = dataLoader.getAllImagesList();
 const similarImagesJson = dataLoader.getAllSimilarListJson();
+const imgFolderList = dataLoader.imgFolderList;
 
 // Use the loaded data as needed in your application
 // console.log("Image List:", imageList);
 // console.log("Similar Images JSON:", similarImagesJson);
-// "ido", "inf", "kwm", "pev", "uxq", "yaj", "zrc"
+// "ldo", "inf", "kwm", "pev", "uxq", "yaj", "zrc"
 // const imgListToCat = {
-//   animals: "ido",
+//   animals: "ldo",
 //   flags: "inf",
 //   architecture: "kwm",
 //   birds: "pev",
@@ -21,8 +22,8 @@ const similarImagesJson = dataLoader.getAllSimilarListJson();
 //   cars: "yaj",
 //   flowers: "zrc",
 // };
-let imgFoldersList = [];
-let imgsList = {};
+// let imgFoldersList = [];
+// let imgsList = {};
 // async function getAllImagesList() {
 //   const imgsList = {};
 //   const imgFolderList = await fs.readdir(`${process.cwd()}/public`); // Use await to wait for the folder list
@@ -50,23 +51,21 @@ let imgsList = {};
 router.get("/category", async (req, res) => {
   res.json({
     category: Object.keys(dataLoader.imgListToCat),
-    length: imgFoldersList.length,
+    length: imgFolderList.length,
   });
 });
 
 // Loop through the imgListToCat object to create routes dynamically 😜
 for (const category in dataLoader.imgListToCat) {
-  if (dataLoader.imgListToCat.hasOwnProperty(category)) {
-    const key = dataLoader.imgListToCat[category];
-
-    router.get(`/images/${category}`, async (req, res) => {
-      let data = imgsList[key];
-      res.json({
-        imageNames: data,
-        length: data.length,
-      });
+  const key = dataLoader.imgListToCat[category];
+  let data = imageList[key];
+  router.get(`/images/${category}`, async (req, res) => {
+    console.log(category);
+    res.json({
+      [category]: imageList[key],
+      length: data.length,
     });
-  }
+  });
 }
 router.get("/image/:imageName", (req, res) => {
   const imageName = req.params.imageName;

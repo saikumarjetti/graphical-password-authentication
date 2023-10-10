@@ -1,6 +1,6 @@
-const imgList = ["ido", "inf", "kwm", "pev", "uxq", "yaj", "zrc"];
+const imgList = ["ldo", "inf", "kwm", "pev", "uxq", "yaj", "zrc"];
 const imgListToCat = {
-  ido: "animals",
+  ldo: "animals",
   inf: "flags",
   kwm: "architecture",
   pev: "birds",
@@ -10,7 +10,7 @@ const imgListToCat = {
 };
 
 const DATA = {
-  ido: [
+  ldo: [
     "ldo1EhDfGteKi.png",
     "ldo5ZW2uFcs8C.png",
     "ldo6mc1rU9bfv.png",

@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
-
+import ImageGrid from "../components/ImageGrid";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -24,13 +24,29 @@ const MenuProps = {
 export interface SignUpProps {
   onSignUp: (username: string, passwordLen: number) => void;
 }
+export interface OnNextType {
+  emailNotExists: boolean;
+  selectImages: boolean;
+}
+interface ImagesData {
+  [category: string]: string[]; // Assuming each category maps to an array of strings
+}
 
 function SignUp(props: SignUpProps) {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("sai");
   const [passwordLen, setPasswordLen] = useState(5);
-  const [emailExists, setEmailExists] = useState(false);
+  const [emailNotExists, setEmailNotExists] = useState(false);
+  const [selectImages, setSelectImages] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+
+  const [onNext, setOnNext] = useState<OnNextType>({
+    emailNotExists: false,
+    selectImages: false,
+  });
   const [categorys, setCategorys] = useState<string[]>([]);
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [imagesData, setimagesData] = useState<ImagesData>({});
+
+  const [categorySelected, setCategorySelected] = useState<string[]>(["food"]);
 
   const getCategorys = () => {
     setCategorys(() => {
@@ -45,35 +61,94 @@ function SignUp(props: SignUpProps) {
       ];
     });
   };
+  const handleSelectedImages = (
+    e: React.MouseEvent<HTMLImageElement, MouseEvent>,
+    item: string
+  ) => {
+    console.log(item);
+    setSelectedImages((pre) => {
+      return [...pre, item];
+    });
+  };
+  const getImagesForCategorysFromServer = async () => {
+    // let currentPage = 1;
+    // const perPage = 10;
+    categorySelected.forEach((category: string) => {
+      // fetch(`/images/${category}?page=${currentPage}&perPage=${perPage}`)
+      fetch(`http://localhost:8000/images/${category}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setimagesData((pre) => {
+            return { ...pre, [Object.keys(data)[0]]: Object.values(data)[0] };
+          });
+          // currentPage++;
+        });
+    });
+  };
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  const handleSelectImages = async () => {
+    await getImagesForCategorysFromServer();
+    setSelectImages(!selectImages);
+    setOnNext((pre) => {
+      return {
+        ...pre,
+        selectImages: !onNext.selectImages,
+      };
+    });
+  };
+
+  const handleChange = (event: SelectChangeEvent<typeof categorySelected>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(typeof value === "string" ? value.split(",") : value);
+    setCategorySelected(typeof value === "string" ? value.split(",") : value);
+    console.log("On change");
+    console.log(categorySelected);
   };
 
   const checkEmail = () => {
     // You can replace this with actual logic to check if the email exists in the database.
     // For now, we'll simulate it by checking if the email is "example@example.com".
-    if (username === "sai") {
-      setEmailExists(true);
+    if (username) {
+      setEmailNotExists(true);
+      setOnNext((pre) => {
+        return { ...pre, emailNotExists: true };
+      });
       getCategorys();
     } else {
-      setEmailExists(false);
+      setEmailNotExists(false);
+      setOnNext((pre) => {
+        return { ...pre, emailNotExists: true };
+      });
     }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = (event: React.FormEvent<HTMLInputElement>): void => {
+    event.preventDefault();
+
     // If the email exists, ask for the password.
-    if (emailExists) {
-      // You can add validation logic here before calling onSignUp.
-      props.onSignUp(username, passwordLen);
-    } else {
-      // Handle the case where the email doesn't exist in your database.
-      // You can display an error message or take appropriate action.
-      alert("Email not found in the database.");
-    }
+    // if (emailNotExists) {
+    //   // You can add validation logic here before calling onSignUp.
+    //   props.onSignUp(username, passwordLen);
+    // } else {
+    //   // Handle the case where the email doesn't exist in your database.
+    //   // You can display an error message or take appropriate action.
+    //   alert("Email not found in the database.");
+    // }
+    fetch("http://localhost:8000/signup", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        passwordLen,
+        imageList: selectedImages,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res));
   };
 
   return (
@@ -85,22 +160,27 @@ function SignUp(props: SignUpProps) {
             SignUp
           </Typography>
           <form
-            style={{ display: "flex", "flex-direction": "column", gap: "10px" }}
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
           >
-            <TextField
-              label="Email"
-              fullWidth
-              margin="normal"
-              autoComplete="true"
-              variant="outlined"
-              value={username}
-              disabled={emailExists}
-              required={true}
-              onChange={(e) => setUsername(e.target.value)}
-              onBlur={checkEmail}
-            />
-            {emailExists && (
+            {!onNext.selectImages && (
+              <TextField
+                label="Email"
+                fullWidth
+                margin="normal"
+                autoComplete="true"
+                variant="outlined"
+                value={username}
+                disabled={onNext.emailNotExists}
+                required={true}
+                onChange={(e) => setUsername(e.target.value)}
+                onBlur={checkEmail}
+              />
+            )}
+            {onNext.emailNotExists && !onNext.selectImages && (
               <>
+                <Typography sx={{ padding: 1 }} variant="body1">
+                  How many images you want to have as password. Min is 5 😅
+                </Typography>
                 <TextField
                   label="Password Length"
                   fullWidth
@@ -115,16 +195,21 @@ function SignUp(props: SignUpProps) {
                   onChange={(e) => setPasswordLen(parseInt(e.target.value, 10))}
                 />
                 <FormControl sx={{ width: "100%" }}>
-                  <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+                  <InputLabel id="demo-multiple-chip-label">
+                    Categorys
+                  </InputLabel>
                   <Select
                     labelId="demo-multiple-chip-label"
                     id="demo-multiple-chip"
                     multiple
                     label="Category"
-                    value={personName}
+                    value={categorySelected}
                     onChange={handleChange}
                     input={
-                      <OutlinedInput id="select-multiple-chip" label="Chip" />
+                      <OutlinedInput
+                        id="select-multiple-chip"
+                        label="Categorys"
+                      />
                     }
                     renderValue={(selected) => (
                       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
@@ -144,17 +229,44 @@ function SignUp(props: SignUpProps) {
                 </FormControl>
 
                 <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleSelectImages}
+                >
+                  Next
+                </Button>
+              </>
+            )}
+            {onNext.selectImages && (
+              <>
+                <Typography>select {passwordLen} images </Typography>
+                {categorySelected.map((category: string) => {
+                  // const imageNames = imagesData[category];
+                  console.log(category);
+                  return (
+                    <ImageGrid
+                      selectedImages={selectedImages}
+                      // setSelectedImages={setSelectImages}
+                      handleSelectedImages={handleSelectedImages}
+                      key={category}
+                      category={category}
+                      imageNames={imagesData[category]}
+                    ></ImageGrid>
+                  );
+                })}
+                <Button
                   type="submit"
                   variant="contained"
                   color="primary"
                   fullWidth
                   onClick={handleSignUp}
                 >
-                  SignUp
+                  Sign Up
                 </Button>
               </>
             )}
-            {!emailExists && (
+            {!onNext.emailNotExists && (
               <Button
                 variant="contained"
                 color="primary"

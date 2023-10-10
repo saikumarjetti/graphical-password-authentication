@@ -71,17 +71,18 @@ router.get("/users/:id", async (req, res) => {
 // Create a new user
 router.post("/signup", async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({
-      username,
-      password: hashedPassword,
-      failedAttempts: 0,
-      locked: false,
-      lockExpiry: 0,
-    });
-    await user.save();
-    res.status(201).json(user);
+    const { username, passwordlen, imagesList } = req.body;
+    console.log(req.body);
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    // const user = new User({
+    //   username,
+    //   password: hashedPassword,
+    //   failedAttempts: 0,
+    //   locked: false,
+    //   lockExpiry: 0,
+    // });
+    // await user.save();
+    res.status(201).json("user");
   } catch (error) {
     res.status(400).json({ message: "Error creating user", error });
   }

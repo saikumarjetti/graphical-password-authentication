@@ -2,7 +2,7 @@ const fs = require("fs");
 
 // Define variables to store the data
 const imgListToCat = {
-  animals: "ido",
+  animals: "ldo",
   flags: "inf",
   architecture: "kwm",
   birds: "pev",

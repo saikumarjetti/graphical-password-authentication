@@ -5,7 +5,7 @@ import json
 
 # All Images paths add here
 # Set up the search engine, You can load 'vit_base_patch16_224_in21k', 'resnet50' etc more then 500+ models
-imgFolderList = ["data/IMAGES/ido", "data/IMAGES/inf", "data/IMAGES/kwm", "data/IMAGES/pev",
+imgFolderList = ["data/IMAGES/ldo", "data/IMAGES/inf", "data/IMAGES/kwm", "data/IMAGES/pev",
                  "data/IMAGES/uxq", "data/IMAGES/yaj", "data/IMAGES/zrc"]
 
 # print(image_list)
