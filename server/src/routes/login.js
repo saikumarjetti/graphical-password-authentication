@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const fs = require("fs").promises;
+const crypto = require("crypto");
 
+// const { computeHash } = require("../../dataLoader");
 function createJwtToken(user) {
   const token = jwt.sign({ userId: user._id, username: user.username }, "key", {
     expiresIn: "24h",
@@ -11,10 +13,51 @@ function createJwtToken(user) {
   return token;
 }
 
+const computeHash = async (imgList) => {
+  let hash = {};
+  for (let i in imgList) {
+    const FolderName = imgList[i].slice(0, 3);
+
+    const fileName = imgList[i];
+
+    const file = await fs.readFile(
+      `${process.cwd()}/public/${FolderName}/${fileName}`
+    );
+
+    const hex = crypto.createHash("sha256").update(file).digest("hex");
+    hash[i] = hex;
+  }
+  let finalHash = Object.values(hash).join("");
+  finalHash = crypto.createHash("sha256").update(finalHash).digest("hex");
+  return finalHash;
+};
+computeHash({
+  0: "uxq2Tfw6ESRXN.png",
+  1: "uxqCsOqu78fNV.png",
+  2: "uxqho2yh0l5Ve.png",
+  3: "uxqt5LCVeoJJH.png",
+  4: "uxqTffVcdA3UN.png",
+});
+router.post("/logingrid", async (req, res) => {
+  const { username } = req.body;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: "Authentication failed. User not found." });
+    } else {
+      res.json({ imageList: user.imagesList });
+    }
+  } catch {}
+});
+
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, selectedImages } = req.body;
   console.log(req.body);
   console.log(req.query);
+
+  console.log("gaialkncalks");
   try {
     // Find the user by username in your database
     const user = await User.findOne({ username });
@@ -42,8 +85,13 @@ router.post("/login", async (req, res) => {
         await user.save();
       }
     }
+    const computedHash = await computeHash(selectedImages);
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = computedHash === user.password;
+    console.log(
+      " 🚀 ~ file: login.js:66 ~ router.post ~ isPasswordValid:",
+      isPasswordValid
+    );
     if (!isPasswordValid) {
       user.failedAttempts++;
 

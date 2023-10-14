@@ -8,7 +8,7 @@ const app = express();
 const helmet = require("helmet");
 const multer = require("multer");
 const dataLoader = require("./dataLoader");
-const aa = require("./test");
+// const aa = require("./test");
 
 // const usersRouter = require("./src/routes/users");
 const loginRouter = require("./src/routes/signUp");
@@ -32,17 +32,17 @@ function LoadFileData() {
   // console.log("Image List:", imageList);
   // console.log("Similar Images JSON:", similarImagesJson);
 }
-// mongoose
-// .connect("mongodb://localhost:27017/GPA", {
-//   useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => {
-//     console.log("Connected to MongoDB successfully");
-//   })
-//   .catch((error) => {
-//     console.error("Error connecting to MongoDB:", error);
-//   });
+mongoose
+  .connect("mongodb://localhost:27017/GPA", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB successfully");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
 
 app.use(cors(corsOptions));
 helmet({

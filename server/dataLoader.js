@@ -46,6 +46,21 @@ function readAllSimilarListJson() {
 }
 readAllSimilarListJson();
 
+const computeHash = async (imgList) => {
+  let hash = {};
+  for (let i in imgList) {
+    const FolderName = imgList[i].slice(0, 3);
+    const fileName = imgList[i];
+    const file = await fs.readFile(
+      `${process.cwd()}/public/${FolderName}/${fileName}`
+    );
+    const hex = crypto.createHash("sha256").update(file).digest("hex");
+    hash[i] = hex;
+  }
+  let finalHash = Object.values(hash).join("");
+  finalHash = crypto.createHash("sha256").update(finalHash).digest("hex");
+  return finalHash;
+};
 // Export functions to load data
 module.exports = {
   readAllImagesList,
@@ -54,4 +69,5 @@ module.exports = {
   getAllSimilarListJson: () => AllSimilarImagesJson,
   imgListToCat,
   imgFolderList,
+  computeHash,
 };

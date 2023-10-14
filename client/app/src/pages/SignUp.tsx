@@ -61,15 +61,12 @@ function SignUp(props: SignUpProps) {
       ];
     });
   };
-  const handleSelectedImages = (
-    e: React.MouseEvent<HTMLImageElement, MouseEvent>,
-    item: string
-  ) => {
+  const handleSelectedImages = (item: string) => {
     console.log(item);
     const l = Object.values(selectedImages);
     if (l.includes(item)) {
       console.log(`${item} already present in list, so removing it now`);
-      setSelectImages((pre) => {
+      setSelectedImages((pre) => {
         let keyToRemove = "0";
         for (const i in selectedImages) {
           if (selectedImages[i] === item) {

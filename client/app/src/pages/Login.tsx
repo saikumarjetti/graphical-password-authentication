@@ -1,6 +1,7 @@
 import NavBar from "../components/NavBar";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { Button, Container, TextField, Typography } from "@mui/material";
+import ImageGrid from "../components/ImageGrid";
 
 export interface LoginProps {
   onLogin: (username: string, password: string) => void;
@@ -10,19 +11,79 @@ function Login(props: LoginProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [emailExists, setEmailExists] = useState(false);
+  const [gridImages, setGridImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState({});
 
-  const checkEmail = () => {
+  const checkEmail = (e) => {
     // You can replace this with actual logic to check if the email exists in the database.
     // For now, we'll simulate it by checking if the email is "example@example.com".
-    if (username === "sai") {
-      setEmailExists(true);
-    } else {
-      setEmailExists(false);
-    }
+    e.preventDefault();
+    fetch("http://localhost:8000/logingrid", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setGridImages(() => {
+          return [...res.imageList];
+        });
+      });
+    setEmailExists(true);
+    // if (username === "sai") {
+    // } else {
+    //   setEmailExists(false);
+    // }
   };
 
-  const handleLogin = () => {
-    // If the email exists, ask for the password.
+  const handleSelectedImages = (item: string) => {
+    console.log(item);
+    const l = Object.values(selectedImages);
+    if (l.includes(item)) {
+      console.log(`${item} already present in list, so removing it now`);
+      setSelectedImages((pre) => {
+        let keyToRemove = "0";
+        for (const i in selectedImages) {
+          if (selectedImages[i] === item) {
+            keyToRemove = i;
+          }
+        }
+        delete selectedImages[keyToRemove];
+        return selectedImages;
+      });
+    } else {
+      setSelectedImages((pre) => {
+        return { ...pre, [l.length]: item };
+      });
+    }
+    console.log(selectedImages);
+  };
+
+  const handleLogin = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    // If the email exists, ask for the password
+    e.preventDefault();
+    fetch("http://localhost:8000/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        selectedImages: selectedImages,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        console.log("login done");
+      });
     if (emailExists) {
       // You can add validation logic here before calling onLogin.
       props.onLogin(username, password);
@@ -55,23 +116,19 @@ function Login(props: LoginProps) {
             />
             {emailExists && (
               <>
-                <TextField
-                  label="Password"
-                  fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  type="password"
-                  autoComplete="=true"
-                  required={true}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <ImageGrid
+                  selectedImages={selectedImages}
+                  // setSelectedImages={setSelectImages}
+                  handleSelectedImages={handleSelectedImages}
+                  // key={category}
+                  imageNames={gridImages}
+                ></ImageGrid>
                 <Button
                   type="submit"
                   variant="contained"
                   color="primary"
                   fullWidth
-                  onClick={handleLogin}
+                  onClick={(e) => handleLogin(e)}
                 >
                   Login
                 </Button>

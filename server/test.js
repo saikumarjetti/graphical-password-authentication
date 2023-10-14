@@ -139,7 +139,7 @@ const hack = () => {
     permutationData.slice(0, 5)
   );
   console.log(
-    " 🚀 ~ file: test.js:135 ~ hack ~ permutationData:6,375,600",
+    " 🚀 ~ file: test.js:135 ~ hack ~ permutationData:6,375,600-127,512,000",
     permutationData.length
   );
   // get hot here 🔥 🥵
@@ -169,4 +169,4 @@ const hack = () => {
 
   //   let finalHash = Object.values(hash).join("");
 };
-hack();
+// hack();
