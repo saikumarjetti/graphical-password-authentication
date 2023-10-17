@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const dataLoader = require("../../dataLoader");
+var os = require("os");
 
+var networkInterfaces = os.networkInterfaces();
+let ip = networkInterfaces["en0"][1]["address"];
+// console.log();
 // Call the function to get the data and handle it with .then()
 
 // Access the loaded data
@@ -61,8 +65,11 @@ for (const category in dataLoader.imgListToCat) {
   let data = imageList[key];
   router.get(`/images/${category}`, async (req, res) => {
     console.log(category);
+    let data = imageList[key].map((val) => {
+      return `http://${ip}:8000/image/${val}`;
+    });
     res.json({
-      [category]: imageList[key],
+      [category]: data,
       length: data.length,
     });
   });

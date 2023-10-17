@@ -10,6 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import ImageGrid from "../components/ImageGrid";
+import ImageCarousel from "../components/ImageCarousel";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -32,7 +33,7 @@ interface ImagesData {
   [category: string]: string[]; // Assuming each category maps to an array of strings
 }
 
-function SignUp(props: SignUpProps) {
+export default function SignUp(props: SignUpProps) {
   const [username, setUsername] = useState("sai");
   const [passwordLen, setPasswordLen] = useState(5);
   const [emailNotExists, setEmailNotExists] = useState(false);
@@ -258,14 +259,19 @@ function SignUp(props: SignUpProps) {
                   // const imageNames = imagesData[category];
                   console.log(category);
                   return (
-                    <ImageGrid
-                      selectedImages={selectedImages}
-                      // setSelectedImages={setSelectImages}
-                      handleSelectedImages={handleSelectedImages}
-                      key={category}
-                      category={category}
-                      imageNames={imagesData[category]}
-                    ></ImageGrid>
+                    <>
+                      {/* <ImageGrid
+                        selectedImages={selectedImages}
+                        // setSelectedImages={setSelectImages}
+                        handleSelectedImages={handleSelectedImages}
+                        key={category}
+                        category={category}
+                        imageNames={imagesData[category]}
+                      ></ImageGrid> */}
+                      {console.log("jai mp")}
+                      {console.log(imagesData[category])}
+                      <ImageCarousel />
+                    </>
                   );
                 })}
                 {selectedImages && (
@@ -282,8 +288,6 @@ function SignUp(props: SignUpProps) {
                         imageNames={Object.values(selectedImages)}
                       ></ImageGrid>
                     </>
-                    {/* ); */}
-                    {/* })} */}
                   </>
                 )}
                 <Button
@@ -313,5 +317,3 @@ function SignUp(props: SignUpProps) {
     </>
   );
 }
-
-export default SignUp;
