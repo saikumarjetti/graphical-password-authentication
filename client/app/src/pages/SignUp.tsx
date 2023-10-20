@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import NavBar from "../components/NavBar";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Button, Container, TextField, Typography } from "@mui/material";
 
 import Box from "@mui/material/Box";
@@ -32,13 +33,18 @@ export interface OnNextType {
 interface ImagesData {
   [category: string]: string[]; // Assuming each category maps to an array of strings
 }
+interface SelectedImages {
+  [key: string]: string;
+}
 
-export default function SignUp(props: SignUpProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function SignUp(_props: SignUpProps) {
   const [username, setUsername] = useState("sai");
   const [passwordLen, setPasswordLen] = useState(5);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [emailNotExists, setEmailNotExists] = useState(false);
   const [selectImages, setSelectImages] = useState(false);
-  const [selectedImages, setSelectedImages] = useState({});
+  const [selectedImages, setSelectedImages] = useState<SelectedImages>({});
 
   const [onNext, setOnNext] = useState<OnNextType>({
     emailNotExists: false,
@@ -67,7 +73,7 @@ export default function SignUp(props: SignUpProps) {
     const l = Object.values(selectedImages);
     if (l.includes(item)) {
       console.log(`${item} already present in list, so removing it now`);
-      setSelectedImages((pre) => {
+      setSelectedImages(() => {
         let keyToRemove = "0";
         for (const i in selectedImages) {
           if (selectedImages[i] === item) {
@@ -93,7 +99,10 @@ export default function SignUp(props: SignUpProps) {
         .then((response) => response.json())
         .then((data) => {
           setimagesData((pre) => {
-            return { ...pre, [Object.keys(data)[0]]: Object.values(data)[0] };
+            return {
+              ...pre,
+              [Object.keys(data)[0]]: Object.values(data)[0] as string[],
+            };
           });
           // currentPage++;
         });
@@ -124,7 +133,9 @@ export default function SignUp(props: SignUpProps) {
     // You can replace this with actual logic to check if the email exists in the database.
     // For now, we'll simulate it by checking if the email is "example@example.com".
     if (username) {
-      setEmailNotExists(true);
+      if (!emailNotExists) {
+        setEmailNotExists(true);
+      }
       setOnNext((pre) => {
         return { ...pre, emailNotExists: true };
       });
@@ -137,7 +148,7 @@ export default function SignUp(props: SignUpProps) {
     }
   };
 
-  const handleSignUp = (event: React.FormEvent<HTMLInputElement>): void => {
+  const handleSignUp = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
 
     // If the email exists, ask for the password.
