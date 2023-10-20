@@ -1,20 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import NavBar from "../components/NavBar";
-import { MouseEvent, useState } from "react";
+import { useState } from "react";
 import { Button, Container, TextField, Typography } from "@mui/material";
 import ImageGrid from "../components/ImageGrid";
 
 export interface LoginProps {
   onLogin: (username: string, password: string) => void;
 }
+interface SelectedImages {
+  [key: string]: string;
+}
 
 function Login(props: LoginProps) {
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [password] = useState("");
   const [emailExists, setEmailExists] = useState(false);
   const [gridImages, setGridImages] = useState<string[]>([]);
-  const [selectedImages, setSelectedImages] = useState({});
+  const [selectedImages, setSelectedImages] = useState<SelectedImages>({});
 
-  const checkEmail = (e) => {
+  const checkEmail = (e: { preventDefault: () => void }) => {
     // You can replace this with actual logic to check if the email exists in the database.
     // For now, we'll simulate it by checking if the email is "example@example.com".
     e.preventDefault();
@@ -47,7 +51,7 @@ function Login(props: LoginProps) {
     const l = Object.values(selectedImages);
     if (l.includes(item)) {
       console.log(`${item} already present in list, so removing it now`);
-      setSelectedImages((pre) => {
+      setSelectedImages(() => {
         let keyToRemove = "0";
         for (const i in selectedImages) {
           if (selectedImages[i] === item) {
@@ -65,7 +69,7 @@ function Login(props: LoginProps) {
     console.log(selectedImages);
   };
 
-  const handleLogin = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>): void => {
     // If the email exists, ask for the password
     e.preventDefault();
     fetch("http://localhost:8000/login", {

@@ -23,9 +23,9 @@ const MenuProps = {
   },
 };
 
-export interface SignUpProps {
-  onSignUp: (username: string, passwordLen: number) => void;
-}
+// export interface SignUpProps {
+//   onSignUp: (username: string, passwordLen: number) => void;
+// }
 export interface OnNextType {
   emailNotExists: boolean;
   selectImages: boolean;
@@ -38,7 +38,7 @@ interface SelectedImages {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function SignUp(_props: SignUpProps) {
+export default function SignUp() {
   const [username, setUsername] = useState("sai");
   const [passwordLen, setPasswordLen] = useState(5);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
