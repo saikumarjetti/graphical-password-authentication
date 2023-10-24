@@ -11,7 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import ImageGrid from "../components/ImageGrid";
-import ImageCarousel from "../components/ImageCarousel";
+// import ImageCarousel from "../components/ImageCarousel";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -56,17 +56,23 @@ export default function SignUp() {
   const [categorySelected, setCategorySelected] = useState<string[]>(["food"]);
 
   const getCategorys = () => {
-    setCategorys(() => {
-      return [
-        "animals",
-        "flags",
-        "architecture",
-        "birds",
-        "food",
-        "cars",
-        "flowers",
-      ];
-    });
+    fetch(`http://localhost:8000/category`)
+      .then((response) => response.json())
+      .then((data) => {
+        setCategorys(() => {
+          return [
+            ...data,
+            // "animals",
+            // "flags",
+            // "architecture",
+            // "birds",
+            // "food",
+            // "cars",
+            // "flowers",
+          ];
+        });
+        // currentPage++;
+      });
   };
   const handleSelectedImages = (item: string) => {
     console.log(item);
@@ -271,17 +277,17 @@ export default function SignUp() {
                   console.log(category);
                   return (
                     <>
-                      {/* <ImageGrid
+                      <ImageGrid
                         selectedImages={selectedImages}
                         // setSelectedImages={setSelectImages}
                         handleSelectedImages={handleSelectedImages}
                         key={category}
                         category={category}
                         imageNames={imagesData[category]}
-                      ></ImageGrid> */}
+                      ></ImageGrid>
                       {console.log("jai mp")}
                       {console.log(imagesData[category])}
-                      <ImageCarousel />
+                      {/* <ImageCarousel /> */}
                     </>
                   );
                 })}

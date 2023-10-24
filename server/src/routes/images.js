@@ -5,7 +5,7 @@ var os = require("os");
 
 var networkInterfaces = os.networkInterfaces();
 let ip = networkInterfaces["en0"][1]["address"];
-// console.log();
+console.log(`ip=${ip}`);
 // Call the function to get the data and handle it with .then()
 
 // Access the loaded data
@@ -64,10 +64,10 @@ for (const category in dataLoader.imgListToCat) {
   const key = dataLoader.imgListToCat[category];
   let data = imageList[key];
   router.get(`/images/${category}`, async (req, res) => {
-    console.log(category);
     let data = imageList[key].map((val) => {
       return `http://${ip}:8000/image/${val}`;
     });
+    console.log(data);
     res.json({
       [category]: data,
       length: data.length,
