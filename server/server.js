@@ -6,18 +6,21 @@ const util = require("util");
 const PORT = 8000;
 const app = express();
 const helmet = require("helmet");
-const multer = require("multer");
+// const multer = require("multer");
 const dataLoader = require("./dataLoader");
 // const aa = require("./test");
 
-// const usersRouter = require("./src/routes/users");
 const loginRouter = require("./src/routes/signUp");
 const signUpRouter = require("./src/routes/login");
 const imagesRouter = require("./src/routes/images");
-const corsOptions = {
-  origin: "http://localhost:5173", // Replace with the actual origin of your React app
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-};
+let os = require("os");
+
+let networkInterfaces = os.networkInterfaces();
+let ip = networkInterfaces["en0"];
+ip = ip[0]["family"] === "IPv6" ? ip[1]["address"] : ip[0]["address"];
+console.log(`ip = ${ip}`);
+// console.log(os.networkInterfaces());
+
 function LoadFileData() {
   dataLoader.readAllImagesList();
 
@@ -44,7 +47,19 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
-app.use(cors(corsOptions));
+const allowedOrigins = ["http://localhost:5173", `http://${ip}:5173`];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 helmet({
   crossOriginResourcePolicy: false,
 });

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "./ImageCarousel.css"; // You may need to create a CSS file for styling
 
 interface ImageCarouselProps {
@@ -37,13 +37,24 @@ const ImageCarousel: React.FC<ImageCarouselProps> = (
 ) => {
   // const [selectedImageIndex, setSelectedImageIndex] = useState<number>();
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  // const [numImages, setNumImages] = useState<number>(props.images.length);
+
   // const touchStartYRef = useRef(0);
   const data = props.selectedImages ? Object.values(props.selectedImages) : [];
 
   const handleImageClick = (imageUrl: string) => {
     // console.log(index);
     // setSelectedImageIndex(index as number);
-    props.handleSelectedImages(imageUrl);
+    if (imageUrl === "previous") {
+      setCurrentImageIndex(currentImageIndex - 1);
+    } else if (imageUrl === "next") {
+      setCurrentImageIndex(currentImageIndex + 1);
+    } else {
+      // Handle regular image click
+      props.handleSelectedImages(imageUrl);
+    }
+    // props.handleSelectedImages(imageUrl);
   };
 
   // const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -67,25 +78,34 @@ const ImageCarousel: React.FC<ImageCarouselProps> = (
   console.log("mp needs food");
   console.log(props);
   return (
-    <div
-      className="image-selector-container"
-      // onTouchStart={handleTouchStart}
-      // onTouchMove={handleTouchMove}
-      ref={containerRef}
-    >
-      {props.images &&
-        props.images.map((imageUrl, index) => (
-          <div
-            key={index}
-            className={`image-item ${
-              data.includes(imageUrl) ? "selected" : ""
-            }`}
-            onClick={() => handleImageClick(imageUrl)}
-          >
-            <img src={imageUrl} alt={`Image ${index + 1}`} />
-          </div>
-        ))}
-    </div>
+    <>
+      <h1>sai</h1>
+      <button onClick={() => setCurrentImageIndex(currentImageIndex - 1)}>
+        Previous
+      </button>
+      <button onClick={() => setCurrentImageIndex(currentImageIndex + 1)}>
+        Next
+      </button>
+      <div
+        className="image-selector-container"
+        // onTouchStart={handleTouchStart}
+        // onTouchMove={handleTouchMove}
+        ref={containerRef}
+      >
+        {props.images &&
+          props.images.map((imageUrl, index) => (
+            <div
+              key={index}
+              className={`image-item ${
+                data.includes(imageUrl) ? "selected" : ""
+              }`}
+              onClick={() => handleImageClick(imageUrl)}
+            >
+              <img src={imageUrl} alt={`Image ${index + 1}`} />
+            </div>
+          ))}
+      </div>
+    </>
   );
 };
 

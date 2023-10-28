@@ -3,7 +3,8 @@
 .image-selector-container {
   display: flex;
   overflow: scroll;
-  scroll-snap-type: y mandatory;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
   scrollbar-width: none; /* Hide scrollbar for better user experience */
   -ms-overflow-style: none;
   width: 150px;
@@ -20,7 +21,7 @@
 }
 
 .image-item img {
-  width: 100%;
+  width: 90%;
   height: 100%;
   object-fit: cover;
 }
@@ -34,5 +35,5 @@
 
 /* Hide scrollbar */
 .image-selector-container::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
 }

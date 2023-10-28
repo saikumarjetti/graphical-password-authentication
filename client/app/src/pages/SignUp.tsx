@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import NavBar from "../components/NavBar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container, TextField, Typography } from "@mui/material";
 
 import Box from "@mui/material/Box";
@@ -44,7 +44,7 @@ export default function SignUp() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [emailNotExists, setEmailNotExists] = useState(false);
   const [selectImages, setSelectImages] = useState(false);
-  const [selectedImages, setSelectedImages] = useState<SelectedImages>({});
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   const [onNext, setOnNext] = useState<OnNextType>({
     emailNotExists: false,
@@ -60,42 +60,41 @@ export default function SignUp() {
       .then((response) => response.json())
       .then((data) => {
         setCategorys(() => {
-          return [
-            ...data,
-            // "animals",
-            // "flags",
-            // "architecture",
-            // "birds",
-            // "food",
-            // "cars",
-            // "flowers",
-          ];
+          return [...data["category"]];
         });
         // currentPage++;
       });
   };
   const handleSelectedImages = (item: string) => {
     console.log(item);
-    const l = Object.values(selectedImages);
-    if (l.includes(item)) {
-      console.log(`${item} already present in list, so removing it now`);
-      setSelectedImages(() => {
-        let keyToRemove = "0";
-        for (const i in selectedImages) {
-          if (selectedImages[i] === item) {
-            keyToRemove = i;
-          }
-        }
-        delete selectedImages[keyToRemove];
-        return selectedImages;
-      });
-    } else {
-      setSelectedImages((pre) => {
-        return { ...pre, [l.length]: item };
-      });
-    }
-    console.log(selectedImages);
+    setSelectedImages((p) => {
+      const pre = [...p];
+      // const l = Object.values(pre);
+      if (pre.includes(item)) {
+        const keyToRemove = pre.indexOf(item);
+        console.log(`${item} already present in list, so removing it now`);
+        // for (const i in pre) {
+        //   if (pre[i] === item) {
+        //     keyToRemove = i;
+        //   }
+        // }
+        // delete pre[keyToRemove];
+
+        pre.splice(keyToRemove, 1);
+        console.log("pre");
+        console.log(pre);
+        return [...pre];
+      } else {
+        pre.push(item);
+        return [...pre];
+      }
+    });
   };
+
+  useEffect(() => {
+    console.log(selectedImages);
+  }, [selectedImages]);
+
   const getImagesForCategorysFromServer = async () => {
     // let currentPage = 1;
     // const perPage = 10;
@@ -270,41 +269,31 @@ export default function SignUp() {
               </>
             )}
             {onNext.selectImages && (
-              <>
+              <div>
                 <Typography>select {passwordLen} images </Typography>
                 {categorySelected.map((category: string) => {
                   // const imageNames = imagesData[category];
                   console.log(category);
                   return (
-                    <>
-                      <ImageGrid
-                        selectedImages={selectedImages}
-                        // setSelectedImages={setSelectImages}
-                        handleSelectedImages={handleSelectedImages}
-                        key={category}
-                        category={category}
-                        imageNames={imagesData[category]}
-                      ></ImageGrid>
-                      {console.log("jai mp")}
-                      {console.log(imagesData[category])}
-                      {/* <ImageCarousel /> */}
-                    </>
+                    <ImageGrid
+                      selectedImages={selectedImages}
+                      // setSelectedImages={setSelectImages}
+                      handleSelectedImages={handleSelectedImages}
+                      key={category}
+                      category={category}
+                      imageNames={imagesData[category]}
+                    />
                   );
                 })}
                 {selectedImages && (
                   <>
                     <h1>Selected images</h1>
-                    {/* {Object.values(selectedImages).map((images)=>{
-                    return ( */}
-                    <>
-                      <ImageGrid
-                        // selectedImages={selectedImages}
-                        // setSelectedImages={setSelectImages}
-                        handleSelectedImages={handleSelectedImages}
-                        category={"selected images"}
-                        imageNames={Object.values(selectedImages)}
-                      ></ImageGrid>
-                    </>
+                    <ImageGrid
+                      handleSelectedImages={handleSelectedImages}
+                      category={"selected images"}
+                      imageNames={Object.values(selectedImages)}
+                      showNumbers={true}
+                    ></ImageGrid>
                   </>
                 )}
                 <Button
@@ -316,7 +305,7 @@ export default function SignUp() {
                 >
                   Sign Up
                 </Button>
-              </>
+              </div>
             )}
             {!onNext.emailNotExists && (
               <Button

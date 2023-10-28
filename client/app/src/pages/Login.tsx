@@ -8,6 +8,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import React from "react";
 
 export interface LoginProps {
   onLogin: (username: string, password: string) => void;
@@ -23,7 +24,6 @@ function Login(props: LoginProps) {
   const [username, setUsername] = useState("sai");
   const [password] = useState("");
   const [emailExists, setEmailExists] = useState(false);
-  // const [gridImages, setGridImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<AllImages>({});
   const [allImages, setAllImages] = useState<ImagesData>({});
   const [categorys, setCategorys] = useState<string[]>([]);
@@ -176,6 +176,7 @@ function Login(props: LoginProps) {
               variant="outlined"
               value={username}
               required={true}
+              disabled={emailExists}
               onChange={(e) => setUsername(e.target.value)}
               onBlur={checkEmail}
             />
@@ -211,27 +212,27 @@ function Login(props: LoginProps) {
 
                     <br />
                     <h1>{categorySelected}</h1>
-                    <ImageGrid
+                    {/* <ImageGrid
                       selectedImages={selectedImages}
                       // setSelectedImages={setSelectImages}
                       handleSelectedImages={handleSelectedImages}
                       // key={category}
                       imageNames={allImages[categorySelected]}
-                    />
+                    /> */}
                     {selectedImages && (
                       <>
                         <h1>Selected images</h1>
                         {/* {Object.values(selectedImages).map((images)=>{
                     return ( */}
-                        <>
+                        <div style={{ display: "flex" }}>
                           <ImageGrid
                             // selectedImages={selectedImages}
                             // setSelectedImages={setSelectImages}
-                            handleSelectedImages={handleSelectedImages}
+                            // handleSelectedImages={handleSelectedImages}
                             category={"selected images"}
                             imageNames={Object.values(selectedImages)}
                           ></ImageGrid>
-                        </>
+                        </div>
                       </>
                     )}
                   </>
