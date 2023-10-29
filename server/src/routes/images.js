@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const dataLoader = require("../../dataLoader");
-let os = require("os");
+// let os = require("os");
 
-let networkInterfaces = os.networkInterfaces();
-let ip = networkInterfaces["en0"];
-ip = ip[0]["family"] === "IPv6" ? ip[1]["address"] : ip[0]["address"];
+// let networkInterfaces = os.networkInterfaces();
+// let ip = networkInterfaces["en0"];
+// ip = ip[0]["family"] === "IPv6" ? ip[1]["address"] : ip[0]["address"];
 
-console.log(`ip=${ip}`);
+// console.log(`ip=${ip}`);
 // Call the function to get the data and handle it with .then()
 
 // Access the loaded data
 const imageList = dataLoader.getAllImagesList();
-const similarImagesJson = dataLoader.getAllSimilarListJson();
+// const similarImagesJson = dataLoader.getAllSimilarListJson();
 const imgFolderList = dataLoader.imgFolderList;
 
 // Use the loaded data as needed in your application
@@ -68,7 +68,7 @@ for (const category in dataLoader.imgListToCat) {
   let data = imageList[key];
   router.get(`/images/${category}`, async (req, res) => {
     let data = imageList[key].map((val) => {
-      return `http://${ip}:8000/image/${val}`;
+      return val;
     });
     // console.log(data);
     res.json({
