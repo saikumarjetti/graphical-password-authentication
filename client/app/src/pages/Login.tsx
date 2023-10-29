@@ -13,9 +13,6 @@ import React from "react";
 export interface LoginProps {
   onLogin: (username: string, password: string) => void;
 }
-interface AllImages {
-  [key: string]: string;
-}
 interface ImagesData {
   [category: string]: string[]; // Assuming each category maps to an array of strings
 }

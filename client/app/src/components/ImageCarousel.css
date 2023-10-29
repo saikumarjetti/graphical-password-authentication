@@ -32,8 +32,3 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
   opacity: 0.5;
 }
-
-/* Hide scrollbar */
-.image-selector-container::-webkit-scrollbar {
-  /* display: none; */
-}
