@@ -55,7 +55,7 @@ const imgFolderList = dataLoader.imgFolderList;
 //   });
 
 router.get("/category", async (req, res) => {
-  console.log("categort");
+  // console.log("categort");
   res.json({
     category: Object.keys(dataLoader.imgListToCat),
     length: imgFolderList.length,
@@ -70,7 +70,7 @@ for (const category in dataLoader.imgListToCat) {
     let data = imageList[key].map((val) => {
       return `http://${ip}:8000/image/${val}`;
     });
-    console.log(data);
+    // console.log(data);
     res.json({
       [category]: data,
       length: data.length,
@@ -80,8 +80,8 @@ for (const category in dataLoader.imgListToCat) {
 router.get("/image/:imageName", (req, res) => {
   const imageName = req.params.imageName;
   const folderName = imageName.slice(0, 3);
-  console.log(`image name ${imageName}`);
-  console.log(`folder name ${folderName}`);
+  // console.log(`image name ${imageName}`);
+  // console.log(`folder name ${folderName}`);
   res.sendFile(process.cwd() + `/public/${folderName}/${imageName}`);
 });
 

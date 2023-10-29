@@ -33,14 +33,11 @@ export interface OnNextType {
 interface ImagesData {
   [category: string]: string[]; // Assuming each category maps to an array of strings
 }
-interface SelectedImages {
-  [key: string]: string;
-}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function SignUp() {
   const [username, setUsername] = useState("sai");
-  const [passwordLen, setPasswordLen] = useState(5);
+  const [passwordLen, setPasswordLen] = useState(7);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [emailNotExists, setEmailNotExists] = useState(false);
   const [selectImages, setSelectImages] = useState(false);
@@ -53,7 +50,14 @@ export default function SignUp() {
   const [categorys, setCategorys] = useState<string[]>([]);
   const [imagesData, setimagesData] = useState<ImagesData>({});
 
-  const [categorySelected, setCategorySelected] = useState<string[]>(["food"]);
+  const [categorySelected, setCategorySelected] = useState<string[]>([
+    "animals",
+    "flags",
+    "architecture",
+    "birds",
+    "food",
+    "cars",
+  ]);
 
   const getCategorys = () => {
     fetch(`http://localhost:8000/category`)

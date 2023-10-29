@@ -24,7 +24,7 @@ function Login(props: LoginProps) {
   const [username, setUsername] = useState("sai");
   const [password] = useState("");
   const [emailExists, setEmailExists] = useState(false);
-  const [selectedImages, setSelectedImages] = useState<AllImages>({});
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [allImages, setAllImages] = useState<ImagesData>({});
   const [categorys, setCategorys] = useState<string[]>([]);
   const [categorySelected, setCategorySelected] = useState("");
@@ -90,28 +90,29 @@ function Login(props: LoginProps) {
   };
 
   const handleSelectedImages = (item: string) => {
+    // const regex = /(?:^|\/)([^/.]+)\.(?:png|jpg|gif)$/;
+    // const match = regex.exec(item);
+    // if (match) {
+    //   console.log(match[1]); // "ldo1EhDfGteKi"
+    // }
     console.log(item);
-    const l = Object.values(selectedImages);
-    if (l.includes(item)) {
-      console.log(`${item} already present in list, so removing it now`);
-      setSelectedImages(() => {
-        let keyToRemove = "0";
-        for (const i in selectedImages) {
-          if (selectedImages[i] === item) {
-            keyToRemove = i;
-          }
-        }
-        delete selectedImages[keyToRemove];
-        return selectedImages;
-      });
-    } else {
-      setSelectedImages((pre) => {
-        return { ...pre, [l.length]: item };
-      });
-    }
-    console.log(selectedImages);
-  };
+    setSelectedImages((p) => {
+      const pre = [...p];
+      // const l = Object.values(pre);
+      if (pre.includes(item)) {
+        const keyToRemove = pre.indexOf(item);
+        console.log(`${item} already present in list, so removing it now`);
 
+        pre.splice(keyToRemove, 1);
+        console.log("pre");
+        console.log(pre);
+        return [...pre];
+      } else {
+        pre.push(item);
+        return [...pre];
+      }
+    });
+  };
   const handleLogin = async (
     e: React.MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
@@ -229,6 +230,7 @@ function Login(props: LoginProps) {
                             // selectedImages={selectedImages}
                             // setSelectedImages={setSelectImages}
                             // handleSelectedImages={handleSelectedImages}
+                            showNumbers={true}
                             category={"selected images"}
                             imageNames={Object.values(selectedImages)}
                           ></ImageGrid>

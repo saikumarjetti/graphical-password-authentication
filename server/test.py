@@ -60,12 +60,14 @@ allFilesHash = {
     "uxqt5LCVeoJJH.png": "fd3abb15b5d02b198efcb827d34ca09ad20f91c773149291e3c0b194efe4376e",
 }
 
+
 solutionSequence = {
-    0: "uxq2Tfw6ESRXN.png",
-    1: "uxq40s58vkvz5.png",
-    2: "uxqBkCpiDeYEM.png",
-    3: "uxqCsOqu78fNV.png",
-    4: "uxqI3SVSPwIQU.png",
+    0: "ldo1EhDfGteKi.png",
+    1: "inf57AAbLazWx.png",
+    2: "kwm65ggKjX2bH.png",
+    3: "pev2ypIcZZlMM.png",
+    4: "uxq2Tfw6ESRXN.png",
+    5: "yaj3tKeAg8e1i.png",
 }
 
 

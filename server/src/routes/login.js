@@ -31,13 +31,13 @@ const computeHash = async (imgList) => {
   finalHash = crypto.createHash("sha256").update(finalHash).digest("hex");
   return finalHash;
 };
-computeHash({
-  0: "uxq2Tfw6ESRXN.png",
-  1: "uxqCsOqu78fNV.png",
-  2: "uxqho2yh0l5Ve.png",
-  3: "uxqt5LCVeoJJH.png",
-  4: "uxqTffVcdA3UN.png",
-});
+// computeHash({
+//   0: "uxq2Tfw6ESRXN.png",
+//   1: "uxqCsOqu78fNV.png",
+//   2: "uxqho2yh0l5Ve.png",
+//   3: "uxqt5LCVeoJJH.png",
+//   4: "uxqTffVcdA3UN.png",
+// });
 router.post("/logingrid", async (req, res) => {
   const { username } = req.body;
   try {
@@ -53,11 +53,10 @@ router.post("/logingrid", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { username, selectedImages } = req.body;
+  const { username, imageList } = req.body;
   console.log(req.body);
   console.log(req.query);
 
-  console.log("gaialkncalks");
   try {
     // Find the user by username in your database
     const user = await User.findOne({ username });
@@ -85,7 +84,13 @@ router.post("/login", async (req, res) => {
         await user.save();
       }
     }
-    const computedHash = await computeHash(selectedImages);
+    const regex = /(?:^|\/)([^/.]+)\.(?:png|jpg|gif)$/;
+    console.log(imageList);
+
+    let finalData = imageList.map((item) => {
+      return regex.exec(item)[1] + ".png";
+    });
+    const computedHash = await computeHash(finalData);
 
     const isPasswordValid = computedHash === user.password;
     console.log(
@@ -124,7 +129,7 @@ router.post("/login", async (req, res) => {
     await user.save();
 
     const token = createJwtToken(user);
-    res.json({ token, user });
+    res.json({ token, user, message: "Good to go bro " });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });

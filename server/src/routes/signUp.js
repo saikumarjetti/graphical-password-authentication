@@ -103,13 +103,13 @@ const computeHash = async (imgList) => {
   finalHash = crypto.createHash("sha256").update(finalHash).digest("hex");
   return finalHash;
 };
-getSimilarImages({
-  0: "uxq2Tfw6ESRXN.png",
-  1: "uxq40s58vkvz5.png",
-  2: "uxqBkCpiDeYEM.png",
-  3: "uxqCsOqu78fNV.png",
-  4: "uxqI3SVSPwIQU.png",
-});
+// getSimilarImages({
+//   0: "uxq2Tfw6ESRXN.png",
+//   1: "uxq40s58vkvz5.png",
+//   2: "uxqBkCpiDeYEM.png",
+//   3: "uxqCsOqu78fNV.png",
+//   4: "uxqI3SVSPwIQU.png",
+// });
 function shuffleImages(array) {
   let currentIndex = array.length;
   let randomIndex = 0;
@@ -158,40 +158,50 @@ router.post("/signup", async (req, res) => {
   try {
     const { username, imageList } = req.body;
     const passwordLen = parseInt(req.body.passwordLen, 10);
-    let totalImg = 25;
-    let finalHash = await computeHash(imageList);
+    // let totalImg = 25;
+    const regex = /(?:^|\/)([^/.]+)\.(?:png|jpg|gif)$/;
+    console.log(imageList);
 
-    let similarImages = await getSimilarImages(imageList, (size = 3));
+    let finalData = imageList.map((item) => {
+      return regex.exec(item)[1] + ".png";
+    });
+    console.log("data");
+    console.log(finalData);
+    let finalHash = await computeHash(finalData);
 
-    totalImg = totalImg - similarImages.length;
-    let fillinImages = await getRandomImgNames(similarImages, totalImg);
+    // let similarImages = await getSimilarImages(imageList, (size = 3));
 
-    let finalData = shuffleImages(similarImages.concat(fillinImages));
-    if (findDuplicates(finalData)) {
-      console.log("ohhh no duplicates ");
-      res.status(400).json({ message: "Error creating user", error });
-      return;
-    }
-    for (let i in imageList) {
-      if (!similarImages.includes(imageList[i])) {
-        console.log(`${imageList[i]} is not present in similar images list`);
-        res.status(400).json({ message: "Error creating user", error });
-        return;
-      }
-    }
+    // totalImg = totalImg - similarImages.length;
+    // let fillinImages = await getRandomImgNames(similarImages, totalImg);
+
+    // let finalData = shuffleImages(similarImages.concat(fillinImages));
+    // if (findDuplicates(finalData)) {
+    //   console.log("ohhh no duplicates ");
+    //   res
+    //     .status(400)
+    //     .json({ message: "Error creating user duplicates", error });
+    //   return;
+    // }
+    // for (let i in imageList) {
+    //   if (!similarImages.includes(imageList[i])) {
+    //     console.log(`${imageList[i]} is not present in similar images list`);
+    //     res.status(400).json({ message: "Error creating user", error });
+    //     return;
+    //   }
+    // }
     const user = new User({
       username,
       password: finalHash,
       failedAttempts: 0,
       locked: false,
       lockExpiry: 0,
-      imagesList: finalData,
     });
 
     await user.save();
-    res.status(201).json(user);
+    res.status(201).json({ user, message: "Good to go Bro" });
   } catch (error) {
-    res.status(400).json({ message: "Error creating user", error });
+    res.status(400).json({ message: "Error creating user1", error });
+    console.log(error);
   }
 });
 
