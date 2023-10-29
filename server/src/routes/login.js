@@ -38,17 +38,9 @@ const computeHash = async (imgList) => {
 //   3: "uxqt5LCVeoJJH.png",
 //   4: "uxqTffVcdA3UN.png",
 // });
-router.post("/logingrid", async (req, res) => {
-  const { username } = req.body;
+router.get("/test", async (req, res) => {
   try {
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res
-        .status(401)
-        .json({ message: "Authentication failed. User not found." });
-    } else {
-      res.json({ imageList: user.imagesList });
-    }
+    return res.status(200).json({ message: "good to go." });
   } catch {}
 });
 
