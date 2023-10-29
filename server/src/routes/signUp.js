@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user");
-const bcrypt = require("bcryptjs");
+// const User = require("../models/user");
+// const bcrypt = require("bcryptjs");
 const fs = require("fs").promises;
 const dataLoader = require("../../dataLoader");
 const crypto = require("crypto");
 
-const AllSimilarImagesJson = dataLoader.getAllSimilarListJson();
 const findDuplicates = (imgList) => {
   let seen = {}; // An object to store seen elements
 
@@ -103,13 +102,7 @@ const computeHash = async (imgList) => {
   finalHash = crypto.createHash("sha256").update(finalHash).digest("hex");
   return finalHash;
 };
-// getSimilarImages({
-//   0: "uxq2Tfw6ESRXN.png",
-//   1: "uxq40s58vkvz5.png",
-//   2: "uxqBkCpiDeYEM.png",
-//   3: "uxqCsOqu78fNV.png",
-//   4: "uxqI3SVSPwIQU.png",
-// });
+
 function shuffleImages(array) {
   let currentIndex = array.length;
   let randomIndex = 0;
@@ -189,16 +182,16 @@ router.post("/signup", async (req, res) => {
     //     return;
     //   }
     // }
-    const user = new User({
-      username,
-      password: finalHash,
-      failedAttempts: 0,
-      locked: false,
-      lockExpiry: 0,
-    });
+    // const user = new User({
+    //   username,
+    //   password: finalHash,
+    //   failedAttempts: 0,
+    //   locked: false,
+    //   lockExpiry: 0,
+    // });
 
-    await user.save();
-    res.status(201).json({ user, message: "Good to go Bro" });
+    // await user.save();
+    res.status(201).json({ username, password, message: "Good to go Bro" });
   } catch (error) {
     res.status(400).json({ message: "Error creating user1", error });
     console.log(error);
