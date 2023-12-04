@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import NavBar from "../components/NavBar";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, TextField, Typography } from "@mui/material";
 
 import Box from "@mui/material/Box";
@@ -8,7 +7,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import ImageGrid from "../components/ImageGrid";
 // import ImageCarousel from "../components/ImageCarousel";
@@ -26,31 +25,29 @@ const MenuProps = {
 // export interface SignUpProps {
 //   onSignUp: (username: string, passwordLen: number) => void;
 // }
-export interface OnNextType {
-  emailNotExists: boolean;
-  selectImages: boolean;
-}
-interface ImagesData {
-  [category: string]: string[]; // Assuming each category maps to an array of strings
-}
+// export interface OnNextType {
+//   emailNotExists: boolean;
+//   selectImages: boolean;
+// }
+// interface ImagesData {
+//   [category: string]: string[]; // Assuming each category maps to an array of strings
+// }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function SignUp() {
   const [username, setUsername] = useState("sai");
   const [passwordLen, setPasswordLen] = useState(7);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [emailNotExists, setEmailNotExists] = useState(false);
   const [selectImages, setSelectImages] = useState(false);
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState([]);
 
-  const [onNext, setOnNext] = useState<OnNextType>({
+  const [onNext, setOnNext] = useState({
     emailNotExists: false,
     selectImages: false,
   });
-  const [categorys, setCategorys] = useState<string[]>([]);
-  const [imagesData, setimagesData] = useState<ImagesData>({});
+  const [categorys, setCategorys] = useState([]);
+  const [imagesData, setimagesData] = useState({});
 
-  const [categorySelected, setCategorySelected] = useState<string[]>([
+  const [categorySelected, setCategorySelected] = useState([
     "animals",
     "flags",
     "architecture",
@@ -69,7 +66,7 @@ export default function SignUp() {
         // currentPage++;
       });
   };
-  const handleSelectedImages = (item: string) => {
+  const handleSelectedImages = (item) => {
     console.log(item);
     setSelectedImages((p) => {
       const pre = [...p];
@@ -102,7 +99,7 @@ export default function SignUp() {
   const getImagesForCategorysFromServer = async () => {
     // let currentPage = 1;
     // const perPage = 10;
-    categorySelected.forEach((category: string) => {
+    categorySelected.forEach((category) => {
       // fetch(`/images/${category}?page=${currentPage}&perPage=${perPage}`)
       fetch(`http://localhost:8000/images/${category}`)
         .then((response) => response.json())
@@ -110,7 +107,7 @@ export default function SignUp() {
           setimagesData((pre) => {
             return {
               ...pre,
-              [Object.keys(data)[0]]: Object.values(data)[0] as string[],
+              [Object.keys(data)[0]]: Object.values(data)[0],
             };
           });
           // currentPage++;
@@ -129,7 +126,7 @@ export default function SignUp() {
     });
   };
 
-  const handleChange = (event: SelectChangeEvent<typeof categorySelected>) => {
+  const handleChange = (event) => {
     const {
       target: { value },
     } = event;
@@ -157,7 +154,7 @@ export default function SignUp() {
     }
   };
 
-  const handleSignUp = (event: React.MouseEvent<HTMLButtonElement>): void => {
+  const handleSignUp = (event) => {
     event.preventDefault();
 
     // If the email exists, ask for the password.
@@ -275,7 +272,7 @@ export default function SignUp() {
             {onNext.selectImages && (
               <div>
                 <Typography>select {passwordLen} images </Typography>
-                {categorySelected.map((category: string) => {
+                {categorySelected.map((category) => {
                   // const imageNames = imagesData[category];
                   console.log(category);
                   return (

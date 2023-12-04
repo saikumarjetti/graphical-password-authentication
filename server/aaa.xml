@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="0.0010" tests="8" failures="0">
+  <testsuite name="Root Suite" timestamp="2023-10-30T11:33:42" tests="8" time="0.0010" failures="0">
+    <testcase name="Participants_Name" time="0.0000" classname="Participants_Name">
+    </testcase>
+    <testcase name="Round4_Points" time="0.0000" classname="Round4_Points">
+    </testcase>
+    <testcase name="Total" time="0.0010" classname="Total">
+    </testcase>
+    <testcase name="Winner" time="0.0000" classname="Winner">
+    </testcase>
+    <testcase name="Winner(optional)" time="0.0000" classname="Winner(optional)">
+    </testcase>
+    <testcase name="Winner(optional1)" time="0.0000" classname="Winner(optional1)">
+    </testcase>
+    <testcase name="TopThree" time="0.0000" classname="TopThree">
+    </testcase>
+    <testcase name="CompareRound2AndRound3" time="0.0000" classname="CompareRound2AndRound3">
+    </testcase>
+  </testsuite>
+</testsuites>

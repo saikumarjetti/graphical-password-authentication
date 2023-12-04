@@ -1,14 +1,15 @@
-import React, { useRef, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useRef, useState } from "react";
 import "./ImageCarousel.css"; // You may need to create a CSS file for styling
 
-interface ImageCarouselProps {
-  images: string[]; // Array of image URLs
-  imageNames?: string[];
-  category?: string;
-  selectedImages?: object;
-  setSelectedImages?: () => void;
-  handleSelectedImages: (item: string) => void;
-}
+// interface ImageCarouselProps {
+//   images: string[]; // Array of image URLs
+//   imageNames?: string[];
+//   category?: string;
+//   selectedImages?: object;
+//   setSelectedImages?: () => void;
+//   handleSelectedImages: (item: string) => void;
+// }
 // const images1 = [
 //   "uxq2Tfw6ESRXN.png",
 //   "uxq40s58vkvz5.png",
@@ -32,18 +33,17 @@ interface ImageCarouselProps {
 //   "uxqt5LCVeoJJH.png",
 //   "uxqumK2CUbNa5.png",
 // ];
-const ImageCarousel: React.FC<ImageCarouselProps> = (
-  props: ImageCarouselProps
-) => {
+const ImageCarousel = (props) => {
   // const [selectedImageIndex, setSelectedImageIndex] = useState<number>();
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const containerRef = (useRef < HTMLDivElement) | (null > null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   // const [numImages, setNumImages] = useState<number>(props.images.length);
 
   // const touchStartYRef = useRef(0);
+  // eslint-disable-next-line react/prop-types
   const data = props.selectedImages ? Object.values(props.selectedImages) : [];
 
-  const handleImageClick = (imageUrl: string) => {
+  const handleImageClick = (imageUrl) => {
     // console.log(index);
     // setSelectedImageIndex(index as number);
     if (imageUrl === "previous") {
@@ -52,6 +52,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = (
       setCurrentImageIndex(currentImageIndex + 1);
     } else {
       // Handle regular image click
+      // eslint-disable-next-line react/prop-types
       props.handleSelectedImages(imageUrl);
     }
     // props.handleSelectedImages(imageUrl);

@@ -1,17 +1,9 @@
+/* eslint-disable react/prop-types */
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import "./ImageGrid.css"; // You may need to create a CSS file for styling
 
-export type ImageGridProps = {
-  imageNames: string[];
-  category?: string;
-  selectedImages?: object;
-  setSelectedImages?: () => void;
-  handleSelectedImages?: (item: string) => void;
-  showNumbers?: boolean;
-};
-
-export default function ImageGrid(props: ImageGridProps) {
+export default function ImageGrid(props) {
   const data = props.selectedImages ? Object.values(props.selectedImages) : [];
   return (
     props.imageNames && (

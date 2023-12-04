@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import NavBar from "../components/NavBar";
 import { useEffect, useState } from "react";
 import { Button, Container, TextField, Typography } from "@mui/material";
@@ -7,29 +6,28 @@ import ImageCarousel from "../components/ImageCarousel";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import React from "react";
+import Select from "@mui/material/Select";
 
-export interface LoginProps {
-  onLogin: (username: string, password: string) => void;
-}
-interface ImagesData {
-  [category: string]: string[]; // Assuming each category maps to an array of strings
-}
+// export interface LoginProps {
+//   onLogin: (username, password) => void;
+// }
+// interface ImagesData {
+//   [category: string]: string[]; // Assuming each category maps to an array of strings
+// }
 
-function Login(props: LoginProps) {
+function Login(props) {
   const [username, setUsername] = useState("sai");
   const [password] = useState("");
   const [emailExists, setEmailExists] = useState(false);
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
-  const [allImages, setAllImages] = useState<ImagesData>({});
-  const [categorys, setCategorys] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [allImages, setAllImages] = useState({});
+  const [categorys, setCategorys] = useState([]);
   const [categorySelected, setCategorySelected] = useState("");
 
   useEffect(() => {
     console.log("long live mp");
     const fetchData = async () => {
-      fetch(`http://localhost:8000/category`)
+      fetch(`https://server-two-rose.vercel.app/category`)
         .then((response) => response.json())
         .then((data) => {
           setCategorys(() => {
@@ -58,7 +56,7 @@ function Login(props: LoginProps) {
   //       // currentPage++;
   //     });
   // };
-  const checkEmail = (e: { preventDefault: () => void }) => {
+  const checkEmail = (e) => {
     // You can replace this with actual logic to check if the email exists in the database.
     // For now, we'll simulate it by checking if the email is "example@example.com".
     e.preventDefault();
@@ -86,7 +84,7 @@ function Login(props: LoginProps) {
     // }
   };
 
-  const handleSelectedImages = (item: string) => {
+  const handleSelectedImages = (item) => {
     // const regex = /(?:^|\/)([^/.]+)\.(?:png|jpg|gif)$/;
     // const match = regex.exec(item);
     // if (match) {
@@ -110,9 +108,7 @@ function Login(props: LoginProps) {
       }
     });
   };
-  const handleLogin = async (
-    e: React.MouseEvent<HTMLButtonElement>
-  ): Promise<void> => {
+  const handleLogin = async (e) => {
     // If the email exists, ask for the password
     e.preventDefault();
     fetch("http://localhost:8000/login", {
@@ -133,6 +129,7 @@ function Login(props: LoginProps) {
       });
     if (emailExists) {
       // You can add validation logic here before calling onLogin.
+      // eslint-disable-next-line react/prop-types
       props.onLogin(username, password);
     } else {
       // Handle the case where the email doesn't exist in your database.
@@ -141,9 +138,9 @@ function Login(props: LoginProps) {
     }
     // await getCategorys();
   };
-  const handleChangeCategoty = async (event: SelectChangeEvent) => {
+  const handleChangeCategoty = async (event) => {
     console.log(event.target.value);
-    setCategorySelected(event.target.value as string);
+    setCategorySelected(event.target.value);
 
     await fetch(`http://localhost:8000/images/${event.target.value}`)
       .then((response) => response.json())
@@ -151,7 +148,7 @@ function Login(props: LoginProps) {
         setAllImages((pre) => {
           return {
             ...pre,
-            [Object.keys(data)[0]]: Object.values(data)[0] as string[],
+            [Object.keys(data)[0]]: Object.values(data)[0],
           };
         });
         // currentPage++;

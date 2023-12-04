@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 function App() {
-  const handleLogin = (username: string, password: string) => {
+  const handleLogin = (username, password) => {
     // Replace this with your actual login logic
     console.log(
       `Logged in with username: ${username} and password: ${password}`
