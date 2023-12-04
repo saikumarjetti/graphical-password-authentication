@@ -29,7 +29,7 @@ export default function ImageGrid(props) {
               sx={data.includes(item) ? { opacity: 0.3 } : null}
             >
               <img
-                src={item}
+                src={`http://localhost:8000/image/${item}`}
                 onClick={() => {
                   if (props.handleSelectedImages)
                     return props.handleSelectedImages(item);

@@ -1,5 +1,5 @@
 const express = require("express");
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const cors = require("cors");
 // const fs = require("fs");
 // const util = require("util");
@@ -13,28 +13,28 @@ const dataLoader = require("./dataLoader");
 const loginRouter = require("./src/routes/signUp");
 const signUpRouter = require("./src/routes/login");
 const imagesRouter = require("./src/routes/images");
-// let os = require("os");
+let os = require("os");
 
-// let networkInterfaces = os.networkInterfaces();
-// let ip = networkInterfaces["en0"];
-// ip = ip[0]["family"] === "IPv6" ? ip[1]["address"] : ip[0]["address"];
-// console.log(`ip = ${ip}`);
+let networkInterfaces = os.networkInterfaces();
+let ip = networkInterfaces["en0"];
+ip = ip[0]["family"] === "IPv6" ? ip[1]["address"] : ip[0]["address"];
+console.log(`ip = ${ip}`);
 // console.log(os.networkInterfaces());
 
 function LoadFileData() {
   dataLoader.readAllImagesList();
 }
-// mongoose
-//   .connect("mongodb://localhost:27017/GPA", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => {
-//     console.log("Connected to MongoDB successfully");
-//   })
-//   .catch((error) => {
-//     console.error("Error connecting to MongoDB:", error);
-//   });
+mongoose
+  .connect("mongodb://localhost:27017/GPA", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB successfully");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
 
 const allowedOrigins = ["http://localhost:5173"];
 

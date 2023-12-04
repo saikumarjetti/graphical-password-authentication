@@ -47,14 +47,7 @@ export default function SignUp() {
   const [categorys, setCategorys] = useState([]);
   const [imagesData, setimagesData] = useState({});
 
-  const [categorySelected, setCategorySelected] = useState([
-    "animals",
-    "flags",
-    "architecture",
-    "birds",
-    "food",
-    "cars",
-  ]);
+  const [categorySelected, setCategorySelected] = useState([]);
 
   const getCategorys = () => {
     fetch(`http://localhost:8000/category`)
@@ -95,7 +88,9 @@ export default function SignUp() {
   useEffect(() => {
     console.log(selectedImages);
   }, [selectedImages]);
-
+  useEffect(() => {
+    console.log(imagesData);
+  }, [imagesData]);
   const getImagesForCategorysFromServer = async () => {
     // let currentPage = 1;
     // const perPage = 10;

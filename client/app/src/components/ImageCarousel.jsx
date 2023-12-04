@@ -35,12 +35,12 @@ import "./ImageCarousel.css"; // You may need to create a CSS file for styling
 // ];
 const ImageCarousel = (props) => {
   // const [selectedImageIndex, setSelectedImageIndex] = useState<number>();
-  const containerRef = (useRef < HTMLDivElement) | (null > null);
+  // const containerRef = (useRef < HTMLDivElement) | (null > null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const aceEditorRef = useRef();
   // const [numImages, setNumImages] = useState<number>(props.images.length);
 
   // const touchStartYRef = useRef(0);
-  // eslint-disable-next-line react/prop-types
   const data = props.selectedImages ? Object.values(props.selectedImages) : [];
 
   const handleImageClick = (imageUrl) => {
@@ -58,13 +58,13 @@ const ImageCarousel = (props) => {
     // props.handleSelectedImages(imageUrl);
   };
 
-  // const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+  // const handleTouchStart = (e) => {
   //   touchStartYRef.current = e.touches[0].clientY;
   //   console.log(e);
   //   console.log("handleTouchStart");
   // };
 
-  // const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+  // const handleTouchMove = (e) => {
   //   if (containerRef.current) {
   //     const container = containerRef.current;
   //     const touchEndY = e.touches[0].clientY;
@@ -91,7 +91,7 @@ const ImageCarousel = (props) => {
         className="image-selector-container"
         // onTouchStart={handleTouchStart}
         // onTouchMove={handleTouchMove}
-        ref={containerRef}
+        ref={aceEditorRef}
       >
         {props.images &&
           props.images.map((imageUrl, index) => (
@@ -102,7 +102,10 @@ const ImageCarousel = (props) => {
               }`}
               onClick={() => handleImageClick(imageUrl)}
             >
-              <img src={imageUrl} alt={`Image ${index + 1}`} />
+              <img
+                src={`http://localhost:8000/image/${imageUrl}`}
+                alt={`Image ${index + 1}`}
+              />
             </div>
           ))}
       </div>

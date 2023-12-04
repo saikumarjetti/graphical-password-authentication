@@ -24,42 +24,34 @@ function Login(props) {
   const [categorys, setCategorys] = useState([]);
   const [categorySelected, setCategorySelected] = useState("");
 
-  useEffect(() => {
-    console.log("long live mp");
-    const fetchData = async () => {
-      fetch(`https://server-two-rose.vercel.app/category`)
-        .then((response) => response.json())
-        .then((data) => {
-          setCategorys(() => {
-            return [...data["category"]];
-          });
-        });
-    };
-    fetchData();
-  }, []);
-  // const getCategorys = async () => {
-  //   await fetch(`http://localhost:8000/category`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setCategorys(() => {
-  //         return [
-  //           ...data,
-  //           // "animals",
-  //           // "flags",
-  //           // "architecture",
-  //           // "birds",
-  //           // "food",
-  //           // "cars",
-  //           // "flowers",
-  //         ];
+  // useEffect(() => {
+  //   console.log("long live mp");
+  //   const fetchData = async () => {
+  //     fetch(`https://server-two-rose.vercel.app/category`)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         setCategorys(() => {
+  //           return [...data["category"]];
+  //         });
   //       });
-  //       // currentPage++;
-  //     });
-  // };
+  //   };
+  //   fetchData();
+  // }, []);
+  const getCategorys = () => {
+    fetch(`http://localhost:8000/category`)
+      .then((response) => response.json())
+      .then((data) => {
+        setCategorys(() => {
+          return [...data["category"]];
+        });
+        // currentPage++;
+      });
+  };
   const checkEmail = (e) => {
     // You can replace this with actual logic to check if the email exists in the database.
     // For now, we'll simulate it by checking if the email is "example@example.com".
     e.preventDefault();
+
     // fetch("http://localhost:8000/logingrid", {
     //   method: "POST",
     //   headers: {
@@ -78,18 +70,22 @@ function Login(props) {
     //     });
     //   });
     setEmailExists(true);
+    getCategorys();
+
     // if (username === "sai") {
     // } else {
     //   setEmailExists(false);
     // }
   };
 
-  const handleSelectedImages = (item) => {
+  const handleSelectedImages = async (item) => {
     // const regex = /(?:^|\/)([^/.]+)\.(?:png|jpg|gif)$/;
     // const match = regex.exec(item);
     // if (match) {
     //   console.log(match[1]); // "ldo1EhDfGteKi"
     // }
+    // await getImagesForCategorysFromServer();
+
     console.log(item);
     setSelectedImages((p) => {
       const pre = [...p];
