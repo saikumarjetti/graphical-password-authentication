@@ -1,14 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-// const fs = require("fs");
-// const util = require("util");
 const PORT = 8000;
 const app = express();
 const helmet = require("helmet");
-// const multer = require("multer");
 const dataLoader = require("./dataLoader");
-// const aa = require("./test");
 
 const loginRouter = require("./src/routes/signUp");
 const signUpRouter = require("./src/routes/login");
