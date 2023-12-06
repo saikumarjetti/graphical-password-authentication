@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
-const bcrypt = require("bcryptjs");
 const fs = require("fs").promises;
-// const dataLoader = require("../../dataLoader");
 const crypto = require("crypto");
 
 const computeHash = async (imgList) => {
@@ -22,25 +20,6 @@ const computeHash = async (imgList) => {
   return finalHash;
 };
 
-// function shuffleImages(array) {
-//   let currentIndex = array.length;
-//   let randomIndex = 0;
-
-//   // While there remain elements to shuffle.
-//   while (currentIndex > 0) {
-//     // Pick a remaining element.
-//     randomIndex = Math.floor(Math.random() * currentIndex);
-//     currentIndex--;
-
-//     // And swap it with the current element.
-//     [array[currentIndex], array[randomIndex]] = [
-//       array[randomIndex],
-//       array[currentIndex],
-//     ];
-//   }
-
-//   return array;
-// }
 router.get("/users", async (req, res) => {
   const { username } = req.query;
   try {
@@ -70,7 +49,6 @@ router.post("/signup", async (req, res) => {
   try {
     const { username, imageList } = req.body;
     const passwordLen = parseInt(req.body.passwordLen, 10);
-    // let totalImg = 25;
     const regex = /(?:^|\/)([^/.]+)\.(?:png|jpg|gif)$/;
     console.log(imageList);
 

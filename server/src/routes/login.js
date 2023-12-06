@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs").promises;
 const crypto = require("crypto");
 
-// const { computeHash } = require("../../dataLoader");
 function createJwtToken(user) {
   const token = jwt.sign({ userId: user._id, username: user.username }, "key", {
     expiresIn: "24h",
@@ -31,13 +30,7 @@ const computeHash = async (imgList) => {
   finalHash = crypto.createHash("sha256").update(finalHash).digest("hex");
   return finalHash;
 };
-// computeHash({
-//   0: "uxq2Tfw6ESRXN.png",
-//   1: "uxqCsOqu78fNV.png",
-//   2: "uxqho2yh0l5Ve.png",
-//   3: "uxqt5LCVeoJJH.png",
-//   4: "uxqTffVcdA3UN.png",
-// });
+
 router.get("/test", async (req, res) => {
   try {
     return res.status(200).json({ message: "good to go." });

@@ -10,7 +10,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import ImageGrid from "../components/ImageGrid";
-// import ImageCarousel from "../components/ImageCarousel";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -22,31 +21,18 @@ const MenuProps = {
   },
 };
 
-// export interface SignUpProps {
-//   onSignUp: (username: string, passwordLen: number) => void;
-// }
-// export interface OnNextType {
-//   emailNotExists: boolean;
-//   selectImages: boolean;
-// }
-// interface ImagesData {
-//   [category: string]: string[]; // Assuming each category maps to an array of strings
-// }
-
 export default function SignUp() {
   const [username, setUsername] = useState("sai");
   const [passwordLen, setPasswordLen] = useState(7);
   const [emailNotExists, setEmailNotExists] = useState(false);
   const [selectImages, setSelectImages] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
-
   const [onNext, setOnNext] = useState({
     emailNotExists: false,
     selectImages: false,
   });
   const [categorys, setCategorys] = useState([]);
   const [imagesData, setimagesData] = useState({});
-
   const [categorySelected, setCategorySelected] = useState([]);
 
   const getCategorys = () => {
@@ -63,17 +49,9 @@ export default function SignUp() {
     console.log(item);
     setSelectedImages((p) => {
       const pre = [...p];
-      // const l = Object.values(pre);
       if (pre.includes(item)) {
         const keyToRemove = pre.indexOf(item);
         console.log(`${item} already present in list, so removing it now`);
-        // for (const i in pre) {
-        //   if (pre[i] === item) {
-        //     keyToRemove = i;
-        //   }
-        // }
-        // delete pre[keyToRemove];
-
         pre.splice(keyToRemove, 1);
         console.log("pre");
         console.log(pre);
@@ -92,10 +70,7 @@ export default function SignUp() {
     console.log(imagesData);
   }, [imagesData]);
   const getImagesForCategorysFromServer = async () => {
-    // let currentPage = 1;
-    // const perPage = 10;
     categorySelected.forEach((category) => {
-      // fetch(`/images/${category}?page=${currentPage}&perPage=${perPage}`)
       fetch(`http://localhost:8000/images/${category}`)
         .then((response) => response.json())
         .then((data) => {
@@ -131,8 +106,6 @@ export default function SignUp() {
   };
 
   const checkEmail = () => {
-    // You can replace this with actual logic to check if the email exists in the database.
-    // For now, we'll simulate it by checking if the email is "example@example.com".
     if (username) {
       if (!emailNotExists) {
         setEmailNotExists(true);
@@ -151,16 +124,6 @@ export default function SignUp() {
 
   const handleSignUp = (event) => {
     event.preventDefault();
-
-    // If the email exists, ask for the password.
-    // if (emailNotExists) {
-    //   // You can add validation logic here before calling onSignUp.
-    //   props.onSignUp(username, passwordLen);
-    // } else {
-    //   // Handle the case where the email doesn't exist in your database.
-    //   // You can display an error message or take appropriate action.
-    //   alert("Email not found in the database.");
-    // }
     fetch("http://localhost:8000/signup", {
       method: "POST",
       headers: {
@@ -217,7 +180,6 @@ export default function SignUp() {
                   required={true}
                   InputProps={{ inputProps: { min: 5, max: 25 } }}
                   value={passwordLen}
-                  // converting the input value to a number using parseInt with base 10.
                   onChange={(e) => setPasswordLen(parseInt(e.target.value, 10))}
                 />
                 <FormControl sx={{ width: "100%" }}>
@@ -268,12 +230,10 @@ export default function SignUp() {
               <div>
                 <Typography>select {passwordLen} images </Typography>
                 {categorySelected.map((category) => {
-                  // const imageNames = imagesData[category];
                   console.log(category);
                   return (
                     <ImageGrid
                       selectedImages={selectedImages}
-                      // setSelectedImages={setSelectImages}
                       handleSelectedImages={handleSelectedImages}
                       key={category}
                       category={category}

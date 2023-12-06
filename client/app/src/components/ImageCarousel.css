@@ -3,12 +3,14 @@
 .image-selector-container {
   display: flex;
   overflow: scroll;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   scroll-snap-type: x mandatory;
+  overflow-x: auto; /* Enable horizontal scrollbar */
+  white-space: nowrap; /* Display images in a horizontal row */
   scrollbar-width: none; /* Hide scrollbar for better user experience */
   -ms-overflow-style: none;
-  width: 150px;
-  height: 150px; /* Adjust the height as needed */
+  width: 250px;
+  height: 250px; /* Adjust the height as needed */
   position: relative;
 }
 

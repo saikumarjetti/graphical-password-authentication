@@ -20,12 +20,14 @@ let ip = networkInterfaces["en0"];
 ip = ip[0]["family"] === "IPv6" ? ip[1]["address"] : ip[0]["address"];
 console.log(`ip = ${ip}`);
 // console.log(os.networkInterfaces());
-
+// mongodb+srv://vercel:3yDWhqEPSRfHEAnC@gpa.wae5rua.mongodb.net/?retryWrites=true&w=majority
+const uri =
+  "mongodb+srv://vercel:3yDWhqEPSRfHEAnC@gpa.wae5rua.mongodb.net/?retryWrites=true&w=majority";
 function LoadFileData() {
   dataLoader.readAllImagesList();
 }
 mongoose
-  .connect("mongodb://localhost:27017/GPA", {
+  .connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
